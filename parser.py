@@ -9,6 +9,7 @@ precedence = (
     ('left', 'INFERIEUR', 'SUPERIEUR', 'EGAL_EGAL'),
     ('left', 'PLUS', 'MOINS'),
     ('left', 'FOIS', 'DIVISE'),
+    ('right', 'UMINUS'),
 )
 
 
@@ -82,13 +83,24 @@ def p_expression_comparaison(p):
     p[0] = (p[2], p[1], p[3])
 
 
+def p_affectation_simple(p):
+    'affectation_simple : IDENTIFIANT EGAL expression'
+    p[0] = ('assign', p[1], p[3])
+
+
 def p_instruction_for(p):
-    'instruction : FOR LPAREN instruction expression POINT_VIRGULE instruction RPAREN LBRACE bloc RBRACE'
-    # p[3] = initialisation
-    # p[4] = condition
-    # p[6] = incrémentation
-    # p[9] = le bloc à répéter
-    p[0] = ('for', p[3], p[4], p[6], p[9])
+    'instruction : FOR LPAREN affectation_simple POINT_VIRGULE expression POINT_VIRGULE affectation_simple RPAREN LBRACE bloc RBRACE'
+    # p[3]  = initialisation  (i=0)
+    # p[5]  = condition        (i<4)
+    # p[7]  = incrementation   (i=i+1)
+    # p[10] = le bloc a repeter
+    p[0] = ('for', p[3], p[5], p[7], p[10])
+
+
+def p_expression_uminus(p):
+    'expression : MOINS expression %prec UMINUS'
+    p[0] = ('uminus', p[2])
+
 
 def p_expression_group(p):
     'expression : LPAREN expression RPAREN'
@@ -133,6 +145,9 @@ def evalExpr(t):
             print("Erreur : Division par zéro")
             return 0
         return evalExpr(t[1]) / droite
+
+    elif t[0] == 'uminus':
+        return -evalExpr(t[1])
 
 
     elif t[0] == '<':
@@ -183,5 +198,33 @@ def evalInst(t):
 
 #  TEST
 if __name__ == '__main__':
-    data = "x=4;while(x<30){x=x+3;print(x);};for(i=0;i<4;i=i+1;){print(i*i);};"
-    parser.parse(data)
+    # affectation, print
+    s1 = 'x=4;x=x+3;print(x);'
+    # operations arithmetiques
+    s2 = 'a=10;b=3;c=a*b;print(c);d=a/b;print(d);'
+    # if
+    s3 = 'x=5;if(x>3){print(x);};'
+    # if-else
+    s4 = 'x=2;if(x>3){print(x);}else{y=99;print(y);};'
+    # while
+    s5 = 'x=4;while(x<30){x=x+3;print(x);};'
+    # for
+    s6 = 'for(i=0;i<4;i=i+1){print(i*i);};'
+    # while + for combines
+    s7 = 'x=4;while(x<30){x=x+3;print(x);};for(i=0;i<4;i=i+1){print(i*i);};'
+    # moins unaire
+    s8 = 'x=-3;print(x);y=-(2+3);print(y);'
+    # parentheses dans les expressions
+    s9 = 'a=2;b=3;print((a+b)*4);'
+    # erreur : variable non initialisee
+    s10 = 'print(z);'
+    # erreur : division par zero
+    s11 = 'x=5;y=0;print(x/y);'
+
+    tests = [s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11]
+    for i, s in enumerate(tests, 1):
+        variables.clear()
+        print(f"\n{'-'*50}")
+        print(f"  s{i} : {s}")
+        print('-'*50)
+        parser.parse(s)
