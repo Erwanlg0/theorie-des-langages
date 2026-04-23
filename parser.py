@@ -145,8 +145,11 @@ def evalExpr(t):
             print("Erreur : Division par zéro")
             return 0
         return evalExpr(t[1]) / droite
+
     elif t[0] == 'uminus':
         return -evalExpr(t[1])
+
+
     elif t[0] == '<':
         return evalExpr(t[1]) < evalExpr(t[2])
     elif t[0] == '>':
