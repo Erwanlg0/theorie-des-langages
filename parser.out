@@ -3,59 +3,110 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 Grammar
 
 Rule 0     S' -> start
-Rule 1     start -> bloc
-Rule 2     bloc -> instruction
-Rule 3     bloc -> instruction bloc
-Rule 4     instruction -> IDENTIFIANT EGAL expression POINT_VIRGULE
-Rule 5     instruction -> PRINT LPAREN expression RPAREN POINT_VIRGULE
-Rule 6     instruction -> IF LPAREN expression RPAREN LBRACE bloc RBRACE
-Rule 7     instruction -> IF LPAREN expression RPAREN LBRACE bloc RBRACE ELSE LBRACE bloc RBRACE
-Rule 8     instruction -> WHILE LPAREN expression RPAREN LBRACE bloc RBRACE
-Rule 9     expression -> NOMBRE
-Rule 10    expression -> IDENTIFIANT
-Rule 11    expression -> expression PLUS expression
-Rule 12    expression -> expression MOINS expression
-Rule 13    expression -> expression FOIS expression
-Rule 14    expression -> expression DIVISE expression
-Rule 15    expression -> expression INFERIEUR expression
-Rule 16    expression -> expression SUPERIEUR expression
-Rule 17    expression -> expression EGAL_EGAL expression
-Rule 18    affectation_simple -> IDENTIFIANT EGAL expression
-Rule 19    instruction -> FOR LPAREN affectation_simple POINT_VIRGULE expression POINT_VIRGULE affectation_simple RPAREN LBRACE bloc RBRACE
-Rule 20    expression -> MOINS expression
-Rule 21    expression -> LPAREN expression RPAREN
-Rule 22    instruction -> POINT_VIRGULE
+Rule 1     start -> instruction_list
+Rule 2     instruction_list -> instruction
+Rule 3     instruction_list -> instruction_list instruction
+Rule 4     block -> LBRACE RBRACE
+Rule 5     block -> LBRACE instruction_list RBRACE
+Rule 6     instruction -> simple_statement POINT_VIRGULE
+Rule 7     simple_statement -> id_list EGAL expression_list
+Rule 8     simple_statement -> IDENTIFIANT PLUS_EGAL expression
+Rule 9     simple_statement -> IDENTIFIANT MOINS_EGAL expression
+Rule 10    simple_statement -> IDENTIFIANT FOIS_EGAL expression
+Rule 11    simple_statement -> IDENTIFIANT DIVISE_EGAL expression
+Rule 12    simple_statement -> IDENTIFIANT PLUS_PLUS
+Rule 13    simple_statement -> VAR declaration_list
+Rule 14    instruction -> PRINT LPAREN expression_list RPAREN POINT_VIRGULE
+Rule 15    instruction -> expression POINT_VIRGULE
+Rule 16    instruction -> IF LPAREN expression RPAREN block
+Rule 17    instruction -> IF LPAREN expression RPAREN block ELSE block
+Rule 18    instruction -> WHILE LPAREN expression RPAREN block
+Rule 19    instruction -> FOR LPAREN for_part POINT_VIRGULE expression POINT_VIRGULE for_part RPAREN block
+Rule 20    instruction -> FUNCTION IDENTIFIANT LPAREN param_list_opt RPAREN block
+Rule 21    instruction -> RETURN expression POINT_VIRGULE
+Rule 22    instruction -> RETURN POINT_VIRGULE
+Rule 23    instruction -> POINT_VIRGULE
+Rule 24    for_part -> simple_statement
+Rule 25    for_part -> empty
+Rule 26    declaration_list -> declaration
+Rule 27    declaration_list -> declaration_list VIRGULE declaration
+Rule 28    declaration -> IDENTIFIANT
+Rule 29    declaration -> IDENTIFIANT EGAL expression
+Rule 30    id_list -> IDENTIFIANT
+Rule 31    id_list -> id_list VIRGULE IDENTIFIANT
+Rule 32    param_list_opt -> empty
+Rule 33    param_list_opt -> param_list
+Rule 34    param_list -> IDENTIFIANT
+Rule 35    param_list -> param_list VIRGULE IDENTIFIANT
+Rule 36    argument_list_opt -> empty
+Rule 37    argument_list_opt -> expression_list
+Rule 38    expression_list -> expression
+Rule 39    expression_list -> expression_list VIRGULE expression
+Rule 40    expression -> NOMBRE
+Rule 41    expression -> CHAINE
+Rule 42    expression -> IDENTIFIANT
+Rule 43    expression -> IDENTIFIANT LPAREN argument_list_opt RPAREN
+Rule 44    expression -> expression PLUS expression
+Rule 45    expression -> expression MOINS expression
+Rule 46    expression -> expression FOIS expression
+Rule 47    expression -> expression DIVISE expression
+Rule 48    expression -> expression INFERIEUR expression
+Rule 49    expression -> expression SUPERIEUR expression
+Rule 50    expression -> expression EGAL_EGAL expression
+Rule 51    expression -> MOINS expression
+Rule 52    expression -> LPAREN expression RPAREN
+Rule 53    empty -> <empty>
 
 Terminals, with rules where they appear
 
-DIVISE               : 14
-EGAL                 : 4 18
-EGAL_EGAL            : 17
-ELSE                 : 7
-FOIS                 : 13
+CHAINE               : 41
+DIVISE               : 47
+DIVISE_EGAL          : 11
+EGAL                 : 7 29
+EGAL_EGAL            : 50
+ELSE                 : 17
+FOIS                 : 46
+FOIS_EGAL            : 10
 FOR                  : 19
-IDENTIFIANT          : 4 10 18
-IF                   : 6 7
-INFERIEUR            : 15
-LBRACE               : 6 7 7 8 19
-LPAREN               : 5 6 7 8 19 21
-MOINS                : 12 20
-NOMBRE               : 9
-PLUS                 : 11
-POINT_VIRGULE        : 4 5 19 19 22
-PRINT                : 5
-RBRACE               : 6 7 7 8 19
-RPAREN               : 5 6 7 8 19 21
-SUPERIEUR            : 16
-WHILE                : 8
+FUNCTION             : 20
+IDENTIFIANT          : 8 9 10 11 12 20 28 29 30 31 34 35 42 43
+IF                   : 16 17
+INFERIEUR            : 48
+LBRACE               : 4 5
+LPAREN               : 14 16 17 18 19 20 43 52
+MOINS                : 45 51
+MOINS_EGAL           : 9
+NOMBRE               : 40
+PLUS                 : 44
+PLUS_EGAL            : 8
+PLUS_PLUS            : 12
+POINT_VIRGULE        : 6 14 15 19 19 21 22 23
+PRINT                : 14
+RBRACE               : 4 5
+RETURN               : 21 22
+RPAREN               : 14 16 17 18 19 20 43 52
+SUPERIEUR            : 49
+VAR                  : 13
+VIRGULE              : 27 31 35 39
+WHILE                : 18
 error                : 
 
 Nonterminals, with rules where they appear
 
-affectation_simple   : 19 19
-bloc                 : 1 3 6 7 7 8 19
-expression           : 4 5 6 7 8 11 11 12 12 13 13 14 14 15 15 16 16 17 17 18 19 20 21
+argument_list_opt    : 43
+block                : 16 17 17 18 19 20
+declaration          : 26 27
+declaration_list     : 13 27
+empty                : 25 32 36
+expression           : 8 9 10 11 15 16 17 18 19 21 29 38 39 44 44 45 45 46 46 47 47 48 48 49 49 50 50 51 52
+expression_list      : 7 14 37 39
+for_part             : 19 19
+id_list              : 7 31
 instruction          : 2 3
+instruction_list     : 1 3 5
+param_list           : 33 35
+param_list_opt       : 20
+simple_statement     : 6 24
 start                : 0
 
 Parsing method: LALR
@@ -63,27 +114,63 @@ Parsing method: LALR
 state 0
 
     (0) S' -> . start
-    (1) start -> . bloc
-    (2) bloc -> . instruction
-    (3) bloc -> . instruction bloc
-    (4) instruction -> . IDENTIFIANT EGAL expression POINT_VIRGULE
-    (5) instruction -> . PRINT LPAREN expression RPAREN POINT_VIRGULE
-    (6) instruction -> . IF LPAREN expression RPAREN LBRACE bloc RBRACE
-    (7) instruction -> . IF LPAREN expression RPAREN LBRACE bloc RBRACE ELSE LBRACE bloc RBRACE
-    (8) instruction -> . WHILE LPAREN expression RPAREN LBRACE bloc RBRACE
-    (19) instruction -> . FOR LPAREN affectation_simple POINT_VIRGULE expression POINT_VIRGULE affectation_simple RPAREN LBRACE bloc RBRACE
-    (22) instruction -> . POINT_VIRGULE
+    (1) start -> . instruction_list
+    (2) instruction_list -> . instruction
+    (3) instruction_list -> . instruction_list instruction
+    (6) instruction -> . simple_statement POINT_VIRGULE
+    (14) instruction -> . PRINT LPAREN expression_list RPAREN POINT_VIRGULE
+    (15) instruction -> . expression POINT_VIRGULE
+    (16) instruction -> . IF LPAREN expression RPAREN block
+    (17) instruction -> . IF LPAREN expression RPAREN block ELSE block
+    (18) instruction -> . WHILE LPAREN expression RPAREN block
+    (19) instruction -> . FOR LPAREN for_part POINT_VIRGULE expression POINT_VIRGULE for_part RPAREN block
+    (20) instruction -> . FUNCTION IDENTIFIANT LPAREN param_list_opt RPAREN block
+    (21) instruction -> . RETURN expression POINT_VIRGULE
+    (22) instruction -> . RETURN POINT_VIRGULE
+    (23) instruction -> . POINT_VIRGULE
+    (7) simple_statement -> . id_list EGAL expression_list
+    (8) simple_statement -> . IDENTIFIANT PLUS_EGAL expression
+    (9) simple_statement -> . IDENTIFIANT MOINS_EGAL expression
+    (10) simple_statement -> . IDENTIFIANT FOIS_EGAL expression
+    (11) simple_statement -> . IDENTIFIANT DIVISE_EGAL expression
+    (12) simple_statement -> . IDENTIFIANT PLUS_PLUS
+    (13) simple_statement -> . VAR declaration_list
+    (40) expression -> . NOMBRE
+    (41) expression -> . CHAINE
+    (42) expression -> . IDENTIFIANT
+    (43) expression -> . IDENTIFIANT LPAREN argument_list_opt RPAREN
+    (44) expression -> . expression PLUS expression
+    (45) expression -> . expression MOINS expression
+    (46) expression -> . expression FOIS expression
+    (47) expression -> . expression DIVISE expression
+    (48) expression -> . expression INFERIEUR expression
+    (49) expression -> . expression SUPERIEUR expression
+    (50) expression -> . expression EGAL_EGAL expression
+    (51) expression -> . MOINS expression
+    (52) expression -> . LPAREN expression RPAREN
+    (30) id_list -> . IDENTIFIANT
+    (31) id_list -> . id_list VIRGULE IDENTIFIANT
 
-    IDENTIFIANT     shift and go to state 4
     PRINT           shift and go to state 6
-    IF              shift and go to state 7
-    WHILE           shift and go to state 8
-    FOR             shift and go to state 9
+    IF              shift and go to state 9
+    WHILE           shift and go to state 10
+    FOR             shift and go to state 11
+    FUNCTION        shift and go to state 12
+    RETURN          shift and go to state 14
     POINT_VIRGULE   shift and go to state 5
+    IDENTIFIANT     shift and go to state 13
+    VAR             shift and go to state 16
+    NOMBRE          shift and go to state 17
+    CHAINE          shift and go to state 18
+    MOINS           shift and go to state 19
+    LPAREN          shift and go to state 7
 
     start                          shift and go to state 1
-    bloc                           shift and go to state 2
+    instruction_list               shift and go to state 2
     instruction                    shift and go to state 3
+    simple_statement               shift and go to state 4
+    expression                     shift and go to state 8
+    id_list                        shift and go to state 15
 
 state 1
 
@@ -93,1139 +180,2111 @@ state 1
 
 state 2
 
-    (1) start -> bloc .
+    (1) start -> instruction_list .
+    (3) instruction_list -> instruction_list . instruction
+    (6) instruction -> . simple_statement POINT_VIRGULE
+    (14) instruction -> . PRINT LPAREN expression_list RPAREN POINT_VIRGULE
+    (15) instruction -> . expression POINT_VIRGULE
+    (16) instruction -> . IF LPAREN expression RPAREN block
+    (17) instruction -> . IF LPAREN expression RPAREN block ELSE block
+    (18) instruction -> . WHILE LPAREN expression RPAREN block
+    (19) instruction -> . FOR LPAREN for_part POINT_VIRGULE expression POINT_VIRGULE for_part RPAREN block
+    (20) instruction -> . FUNCTION IDENTIFIANT LPAREN param_list_opt RPAREN block
+    (21) instruction -> . RETURN expression POINT_VIRGULE
+    (22) instruction -> . RETURN POINT_VIRGULE
+    (23) instruction -> . POINT_VIRGULE
+    (7) simple_statement -> . id_list EGAL expression_list
+    (8) simple_statement -> . IDENTIFIANT PLUS_EGAL expression
+    (9) simple_statement -> . IDENTIFIANT MOINS_EGAL expression
+    (10) simple_statement -> . IDENTIFIANT FOIS_EGAL expression
+    (11) simple_statement -> . IDENTIFIANT DIVISE_EGAL expression
+    (12) simple_statement -> . IDENTIFIANT PLUS_PLUS
+    (13) simple_statement -> . VAR declaration_list
+    (40) expression -> . NOMBRE
+    (41) expression -> . CHAINE
+    (42) expression -> . IDENTIFIANT
+    (43) expression -> . IDENTIFIANT LPAREN argument_list_opt RPAREN
+    (44) expression -> . expression PLUS expression
+    (45) expression -> . expression MOINS expression
+    (46) expression -> . expression FOIS expression
+    (47) expression -> . expression DIVISE expression
+    (48) expression -> . expression INFERIEUR expression
+    (49) expression -> . expression SUPERIEUR expression
+    (50) expression -> . expression EGAL_EGAL expression
+    (51) expression -> . MOINS expression
+    (52) expression -> . LPAREN expression RPAREN
+    (30) id_list -> . IDENTIFIANT
+    (31) id_list -> . id_list VIRGULE IDENTIFIANT
 
-    $end            reduce using rule 1 (start -> bloc .)
+    $end            reduce using rule 1 (start -> instruction_list .)
+    PRINT           shift and go to state 6
+    IF              shift and go to state 9
+    WHILE           shift and go to state 10
+    FOR             shift and go to state 11
+    FUNCTION        shift and go to state 12
+    RETURN          shift and go to state 14
+    POINT_VIRGULE   shift and go to state 5
+    IDENTIFIANT     shift and go to state 13
+    VAR             shift and go to state 16
+    NOMBRE          shift and go to state 17
+    CHAINE          shift and go to state 18
+    MOINS           shift and go to state 19
+    LPAREN          shift and go to state 7
 
+    instruction                    shift and go to state 20
+    simple_statement               shift and go to state 4
+    expression                     shift and go to state 8
+    id_list                        shift and go to state 15
 
 state 3
 
-    (2) bloc -> instruction .
-    (3) bloc -> instruction . bloc
-    (2) bloc -> . instruction
-    (3) bloc -> . instruction bloc
-    (4) instruction -> . IDENTIFIANT EGAL expression POINT_VIRGULE
-    (5) instruction -> . PRINT LPAREN expression RPAREN POINT_VIRGULE
-    (6) instruction -> . IF LPAREN expression RPAREN LBRACE bloc RBRACE
-    (7) instruction -> . IF LPAREN expression RPAREN LBRACE bloc RBRACE ELSE LBRACE bloc RBRACE
-    (8) instruction -> . WHILE LPAREN expression RPAREN LBRACE bloc RBRACE
-    (19) instruction -> . FOR LPAREN affectation_simple POINT_VIRGULE expression POINT_VIRGULE affectation_simple RPAREN LBRACE bloc RBRACE
-    (22) instruction -> . POINT_VIRGULE
+    (2) instruction_list -> instruction .
 
-    $end            reduce using rule 2 (bloc -> instruction .)
-    RBRACE          reduce using rule 2 (bloc -> instruction .)
-    IDENTIFIANT     shift and go to state 4
-    PRINT           shift and go to state 6
-    IF              shift and go to state 7
-    WHILE           shift and go to state 8
-    FOR             shift and go to state 9
-    POINT_VIRGULE   shift and go to state 5
+    PRINT           reduce using rule 2 (instruction_list -> instruction .)
+    IF              reduce using rule 2 (instruction_list -> instruction .)
+    WHILE           reduce using rule 2 (instruction_list -> instruction .)
+    FOR             reduce using rule 2 (instruction_list -> instruction .)
+    FUNCTION        reduce using rule 2 (instruction_list -> instruction .)
+    RETURN          reduce using rule 2 (instruction_list -> instruction .)
+    POINT_VIRGULE   reduce using rule 2 (instruction_list -> instruction .)
+    IDENTIFIANT     reduce using rule 2 (instruction_list -> instruction .)
+    VAR             reduce using rule 2 (instruction_list -> instruction .)
+    NOMBRE          reduce using rule 2 (instruction_list -> instruction .)
+    CHAINE          reduce using rule 2 (instruction_list -> instruction .)
+    MOINS           reduce using rule 2 (instruction_list -> instruction .)
+    LPAREN          reduce using rule 2 (instruction_list -> instruction .)
+    $end            reduce using rule 2 (instruction_list -> instruction .)
+    RBRACE          reduce using rule 2 (instruction_list -> instruction .)
 
-    instruction                    shift and go to state 3
-    bloc                           shift and go to state 10
 
 state 4
 
-    (4) instruction -> IDENTIFIANT . EGAL expression POINT_VIRGULE
+    (6) instruction -> simple_statement . POINT_VIRGULE
 
-    EGAL            shift and go to state 11
+    POINT_VIRGULE   shift and go to state 21
 
 
 state 5
 
-    (22) instruction -> POINT_VIRGULE .
+    (23) instruction -> POINT_VIRGULE .
 
-    IDENTIFIANT     reduce using rule 22 (instruction -> POINT_VIRGULE .)
-    PRINT           reduce using rule 22 (instruction -> POINT_VIRGULE .)
-    IF              reduce using rule 22 (instruction -> POINT_VIRGULE .)
-    WHILE           reduce using rule 22 (instruction -> POINT_VIRGULE .)
-    FOR             reduce using rule 22 (instruction -> POINT_VIRGULE .)
-    POINT_VIRGULE   reduce using rule 22 (instruction -> POINT_VIRGULE .)
-    $end            reduce using rule 22 (instruction -> POINT_VIRGULE .)
-    RBRACE          reduce using rule 22 (instruction -> POINT_VIRGULE .)
+    PRINT           reduce using rule 23 (instruction -> POINT_VIRGULE .)
+    IF              reduce using rule 23 (instruction -> POINT_VIRGULE .)
+    WHILE           reduce using rule 23 (instruction -> POINT_VIRGULE .)
+    FOR             reduce using rule 23 (instruction -> POINT_VIRGULE .)
+    FUNCTION        reduce using rule 23 (instruction -> POINT_VIRGULE .)
+    RETURN          reduce using rule 23 (instruction -> POINT_VIRGULE .)
+    POINT_VIRGULE   reduce using rule 23 (instruction -> POINT_VIRGULE .)
+    IDENTIFIANT     reduce using rule 23 (instruction -> POINT_VIRGULE .)
+    VAR             reduce using rule 23 (instruction -> POINT_VIRGULE .)
+    NOMBRE          reduce using rule 23 (instruction -> POINT_VIRGULE .)
+    CHAINE          reduce using rule 23 (instruction -> POINT_VIRGULE .)
+    MOINS           reduce using rule 23 (instruction -> POINT_VIRGULE .)
+    LPAREN          reduce using rule 23 (instruction -> POINT_VIRGULE .)
+    $end            reduce using rule 23 (instruction -> POINT_VIRGULE .)
+    RBRACE          reduce using rule 23 (instruction -> POINT_VIRGULE .)
 
 
 state 6
 
-    (5) instruction -> PRINT . LPAREN expression RPAREN POINT_VIRGULE
+    (14) instruction -> PRINT . LPAREN expression_list RPAREN POINT_VIRGULE
 
-    LPAREN          shift and go to state 12
+    LPAREN          shift and go to state 22
 
 
 state 7
 
-    (6) instruction -> IF . LPAREN expression RPAREN LBRACE bloc RBRACE
-    (7) instruction -> IF . LPAREN expression RPAREN LBRACE bloc RBRACE ELSE LBRACE bloc RBRACE
+    (52) expression -> LPAREN . expression RPAREN
+    (40) expression -> . NOMBRE
+    (41) expression -> . CHAINE
+    (42) expression -> . IDENTIFIANT
+    (43) expression -> . IDENTIFIANT LPAREN argument_list_opt RPAREN
+    (44) expression -> . expression PLUS expression
+    (45) expression -> . expression MOINS expression
+    (46) expression -> . expression FOIS expression
+    (47) expression -> . expression DIVISE expression
+    (48) expression -> . expression INFERIEUR expression
+    (49) expression -> . expression SUPERIEUR expression
+    (50) expression -> . expression EGAL_EGAL expression
+    (51) expression -> . MOINS expression
+    (52) expression -> . LPAREN expression RPAREN
 
-    LPAREN          shift and go to state 13
+    NOMBRE          shift and go to state 17
+    CHAINE          shift and go to state 18
+    IDENTIFIANT     shift and go to state 24
+    MOINS           shift and go to state 19
+    LPAREN          shift and go to state 7
 
+    expression                     shift and go to state 23
 
 state 8
 
-    (8) instruction -> WHILE . LPAREN expression RPAREN LBRACE bloc RBRACE
+    (15) instruction -> expression . POINT_VIRGULE
+    (44) expression -> expression . PLUS expression
+    (45) expression -> expression . MOINS expression
+    (46) expression -> expression . FOIS expression
+    (47) expression -> expression . DIVISE expression
+    (48) expression -> expression . INFERIEUR expression
+    (49) expression -> expression . SUPERIEUR expression
+    (50) expression -> expression . EGAL_EGAL expression
 
-    LPAREN          shift and go to state 14
+    POINT_VIRGULE   shift and go to state 25
+    PLUS            shift and go to state 26
+    MOINS           shift and go to state 27
+    FOIS            shift and go to state 28
+    DIVISE          shift and go to state 29
+    INFERIEUR       shift and go to state 30
+    SUPERIEUR       shift and go to state 31
+    EGAL_EGAL       shift and go to state 32
 
 
 state 9
 
-    (19) instruction -> FOR . LPAREN affectation_simple POINT_VIRGULE expression POINT_VIRGULE affectation_simple RPAREN LBRACE bloc RBRACE
+    (16) instruction -> IF . LPAREN expression RPAREN block
+    (17) instruction -> IF . LPAREN expression RPAREN block ELSE block
 
-    LPAREN          shift and go to state 15
+    LPAREN          shift and go to state 33
 
 
 state 10
 
-    (3) bloc -> instruction bloc .
+    (18) instruction -> WHILE . LPAREN expression RPAREN block
 
-    $end            reduce using rule 3 (bloc -> instruction bloc .)
-    RBRACE          reduce using rule 3 (bloc -> instruction bloc .)
+    LPAREN          shift and go to state 34
 
 
 state 11
 
-    (4) instruction -> IDENTIFIANT EGAL . expression POINT_VIRGULE
-    (9) expression -> . NOMBRE
-    (10) expression -> . IDENTIFIANT
-    (11) expression -> . expression PLUS expression
-    (12) expression -> . expression MOINS expression
-    (13) expression -> . expression FOIS expression
-    (14) expression -> . expression DIVISE expression
-    (15) expression -> . expression INFERIEUR expression
-    (16) expression -> . expression SUPERIEUR expression
-    (17) expression -> . expression EGAL_EGAL expression
-    (20) expression -> . MOINS expression
-    (21) expression -> . LPAREN expression RPAREN
+    (19) instruction -> FOR . LPAREN for_part POINT_VIRGULE expression POINT_VIRGULE for_part RPAREN block
 
-    NOMBRE          shift and go to state 18
-    IDENTIFIANT     shift and go to state 16
-    MOINS           shift and go to state 19
-    LPAREN          shift and go to state 20
+    LPAREN          shift and go to state 35
 
-    expression                     shift and go to state 17
 
 state 12
 
-    (5) instruction -> PRINT LPAREN . expression RPAREN POINT_VIRGULE
-    (9) expression -> . NOMBRE
-    (10) expression -> . IDENTIFIANT
-    (11) expression -> . expression PLUS expression
-    (12) expression -> . expression MOINS expression
-    (13) expression -> . expression FOIS expression
-    (14) expression -> . expression DIVISE expression
-    (15) expression -> . expression INFERIEUR expression
-    (16) expression -> . expression SUPERIEUR expression
-    (17) expression -> . expression EGAL_EGAL expression
-    (20) expression -> . MOINS expression
-    (21) expression -> . LPAREN expression RPAREN
+    (20) instruction -> FUNCTION . IDENTIFIANT LPAREN param_list_opt RPAREN block
 
-    NOMBRE          shift and go to state 18
-    IDENTIFIANT     shift and go to state 16
-    MOINS           shift and go to state 19
-    LPAREN          shift and go to state 20
+    IDENTIFIANT     shift and go to state 36
 
-    expression                     shift and go to state 21
 
 state 13
 
-    (6) instruction -> IF LPAREN . expression RPAREN LBRACE bloc RBRACE
-    (7) instruction -> IF LPAREN . expression RPAREN LBRACE bloc RBRACE ELSE LBRACE bloc RBRACE
-    (9) expression -> . NOMBRE
-    (10) expression -> . IDENTIFIANT
-    (11) expression -> . expression PLUS expression
-    (12) expression -> . expression MOINS expression
-    (13) expression -> . expression FOIS expression
-    (14) expression -> . expression DIVISE expression
-    (15) expression -> . expression INFERIEUR expression
-    (16) expression -> . expression SUPERIEUR expression
-    (17) expression -> . expression EGAL_EGAL expression
-    (20) expression -> . MOINS expression
-    (21) expression -> . LPAREN expression RPAREN
+    (8) simple_statement -> IDENTIFIANT . PLUS_EGAL expression
+    (9) simple_statement -> IDENTIFIANT . MOINS_EGAL expression
+    (10) simple_statement -> IDENTIFIANT . FOIS_EGAL expression
+    (11) simple_statement -> IDENTIFIANT . DIVISE_EGAL expression
+    (12) simple_statement -> IDENTIFIANT . PLUS_PLUS
+    (42) expression -> IDENTIFIANT .
+    (43) expression -> IDENTIFIANT . LPAREN argument_list_opt RPAREN
+    (30) id_list -> IDENTIFIANT .
 
-    NOMBRE          shift and go to state 18
-    IDENTIFIANT     shift and go to state 16
-    MOINS           shift and go to state 19
-    LPAREN          shift and go to state 20
+    PLUS_EGAL       shift and go to state 37
+    MOINS_EGAL      shift and go to state 38
+    FOIS_EGAL       shift and go to state 39
+    DIVISE_EGAL     shift and go to state 40
+    PLUS_PLUS       shift and go to state 41
+    POINT_VIRGULE   reduce using rule 42 (expression -> IDENTIFIANT .)
+    PLUS            reduce using rule 42 (expression -> IDENTIFIANT .)
+    MOINS           reduce using rule 42 (expression -> IDENTIFIANT .)
+    FOIS            reduce using rule 42 (expression -> IDENTIFIANT .)
+    DIVISE          reduce using rule 42 (expression -> IDENTIFIANT .)
+    INFERIEUR       reduce using rule 42 (expression -> IDENTIFIANT .)
+    SUPERIEUR       reduce using rule 42 (expression -> IDENTIFIANT .)
+    EGAL_EGAL       reduce using rule 42 (expression -> IDENTIFIANT .)
+    LPAREN          shift and go to state 42
+    EGAL            reduce using rule 30 (id_list -> IDENTIFIANT .)
+    VIRGULE         reduce using rule 30 (id_list -> IDENTIFIANT .)
 
-    expression                     shift and go to state 22
 
 state 14
 
-    (8) instruction -> WHILE LPAREN . expression RPAREN LBRACE bloc RBRACE
-    (9) expression -> . NOMBRE
-    (10) expression -> . IDENTIFIANT
-    (11) expression -> . expression PLUS expression
-    (12) expression -> . expression MOINS expression
-    (13) expression -> . expression FOIS expression
-    (14) expression -> . expression DIVISE expression
-    (15) expression -> . expression INFERIEUR expression
-    (16) expression -> . expression SUPERIEUR expression
-    (17) expression -> . expression EGAL_EGAL expression
-    (20) expression -> . MOINS expression
-    (21) expression -> . LPAREN expression RPAREN
+    (21) instruction -> RETURN . expression POINT_VIRGULE
+    (22) instruction -> RETURN . POINT_VIRGULE
+    (40) expression -> . NOMBRE
+    (41) expression -> . CHAINE
+    (42) expression -> . IDENTIFIANT
+    (43) expression -> . IDENTIFIANT LPAREN argument_list_opt RPAREN
+    (44) expression -> . expression PLUS expression
+    (45) expression -> . expression MOINS expression
+    (46) expression -> . expression FOIS expression
+    (47) expression -> . expression DIVISE expression
+    (48) expression -> . expression INFERIEUR expression
+    (49) expression -> . expression SUPERIEUR expression
+    (50) expression -> . expression EGAL_EGAL expression
+    (51) expression -> . MOINS expression
+    (52) expression -> . LPAREN expression RPAREN
 
-    NOMBRE          shift and go to state 18
-    IDENTIFIANT     shift and go to state 16
+    POINT_VIRGULE   shift and go to state 44
+    NOMBRE          shift and go to state 17
+    CHAINE          shift and go to state 18
+    IDENTIFIANT     shift and go to state 24
     MOINS           shift and go to state 19
-    LPAREN          shift and go to state 20
+    LPAREN          shift and go to state 7
 
-    expression                     shift and go to state 23
+    expression                     shift and go to state 43
 
 state 15
 
-    (19) instruction -> FOR LPAREN . affectation_simple POINT_VIRGULE expression POINT_VIRGULE affectation_simple RPAREN LBRACE bloc RBRACE
-    (18) affectation_simple -> . IDENTIFIANT EGAL expression
+    (7) simple_statement -> id_list . EGAL expression_list
+    (31) id_list -> id_list . VIRGULE IDENTIFIANT
 
-    IDENTIFIANT     shift and go to state 25
+    EGAL            shift and go to state 45
+    VIRGULE         shift and go to state 46
 
-    affectation_simple             shift and go to state 24
 
 state 16
 
-    (10) expression -> IDENTIFIANT .
+    (13) simple_statement -> VAR . declaration_list
+    (26) declaration_list -> . declaration
+    (27) declaration_list -> . declaration_list VIRGULE declaration
+    (28) declaration -> . IDENTIFIANT
+    (29) declaration -> . IDENTIFIANT EGAL expression
 
-    POINT_VIRGULE   reduce using rule 10 (expression -> IDENTIFIANT .)
-    PLUS            reduce using rule 10 (expression -> IDENTIFIANT .)
-    MOINS           reduce using rule 10 (expression -> IDENTIFIANT .)
-    FOIS            reduce using rule 10 (expression -> IDENTIFIANT .)
-    DIVISE          reduce using rule 10 (expression -> IDENTIFIANT .)
-    INFERIEUR       reduce using rule 10 (expression -> IDENTIFIANT .)
-    SUPERIEUR       reduce using rule 10 (expression -> IDENTIFIANT .)
-    EGAL_EGAL       reduce using rule 10 (expression -> IDENTIFIANT .)
-    RPAREN          reduce using rule 10 (expression -> IDENTIFIANT .)
+    IDENTIFIANT     shift and go to state 49
 
+    declaration_list               shift and go to state 47
+    declaration                    shift and go to state 48
 
 state 17
 
-    (4) instruction -> IDENTIFIANT EGAL expression . POINT_VIRGULE
-    (11) expression -> expression . PLUS expression
-    (12) expression -> expression . MOINS expression
-    (13) expression -> expression . FOIS expression
-    (14) expression -> expression . DIVISE expression
-    (15) expression -> expression . INFERIEUR expression
-    (16) expression -> expression . SUPERIEUR expression
-    (17) expression -> expression . EGAL_EGAL expression
+    (40) expression -> NOMBRE .
 
-    POINT_VIRGULE   shift and go to state 26
-    PLUS            shift and go to state 27
-    MOINS           shift and go to state 28
-    FOIS            shift and go to state 29
-    DIVISE          shift and go to state 30
-    INFERIEUR       shift and go to state 31
-    SUPERIEUR       shift and go to state 32
-    EGAL_EGAL       shift and go to state 33
+    POINT_VIRGULE   reduce using rule 40 (expression -> NOMBRE .)
+    PLUS            reduce using rule 40 (expression -> NOMBRE .)
+    MOINS           reduce using rule 40 (expression -> NOMBRE .)
+    FOIS            reduce using rule 40 (expression -> NOMBRE .)
+    DIVISE          reduce using rule 40 (expression -> NOMBRE .)
+    INFERIEUR       reduce using rule 40 (expression -> NOMBRE .)
+    SUPERIEUR       reduce using rule 40 (expression -> NOMBRE .)
+    EGAL_EGAL       reduce using rule 40 (expression -> NOMBRE .)
+    RPAREN          reduce using rule 40 (expression -> NOMBRE .)
+    VIRGULE         reduce using rule 40 (expression -> NOMBRE .)
 
 
 state 18
 
-    (9) expression -> NOMBRE .
+    (41) expression -> CHAINE .
 
-    POINT_VIRGULE   reduce using rule 9 (expression -> NOMBRE .)
-    PLUS            reduce using rule 9 (expression -> NOMBRE .)
-    MOINS           reduce using rule 9 (expression -> NOMBRE .)
-    FOIS            reduce using rule 9 (expression -> NOMBRE .)
-    DIVISE          reduce using rule 9 (expression -> NOMBRE .)
-    INFERIEUR       reduce using rule 9 (expression -> NOMBRE .)
-    SUPERIEUR       reduce using rule 9 (expression -> NOMBRE .)
-    EGAL_EGAL       reduce using rule 9 (expression -> NOMBRE .)
-    RPAREN          reduce using rule 9 (expression -> NOMBRE .)
+    POINT_VIRGULE   reduce using rule 41 (expression -> CHAINE .)
+    PLUS            reduce using rule 41 (expression -> CHAINE .)
+    MOINS           reduce using rule 41 (expression -> CHAINE .)
+    FOIS            reduce using rule 41 (expression -> CHAINE .)
+    DIVISE          reduce using rule 41 (expression -> CHAINE .)
+    INFERIEUR       reduce using rule 41 (expression -> CHAINE .)
+    SUPERIEUR       reduce using rule 41 (expression -> CHAINE .)
+    EGAL_EGAL       reduce using rule 41 (expression -> CHAINE .)
+    RPAREN          reduce using rule 41 (expression -> CHAINE .)
+    VIRGULE         reduce using rule 41 (expression -> CHAINE .)
 
 
 state 19
 
-    (20) expression -> MOINS . expression
-    (9) expression -> . NOMBRE
-    (10) expression -> . IDENTIFIANT
-    (11) expression -> . expression PLUS expression
-    (12) expression -> . expression MOINS expression
-    (13) expression -> . expression FOIS expression
-    (14) expression -> . expression DIVISE expression
-    (15) expression -> . expression INFERIEUR expression
-    (16) expression -> . expression SUPERIEUR expression
-    (17) expression -> . expression EGAL_EGAL expression
-    (20) expression -> . MOINS expression
-    (21) expression -> . LPAREN expression RPAREN
+    (51) expression -> MOINS . expression
+    (40) expression -> . NOMBRE
+    (41) expression -> . CHAINE
+    (42) expression -> . IDENTIFIANT
+    (43) expression -> . IDENTIFIANT LPAREN argument_list_opt RPAREN
+    (44) expression -> . expression PLUS expression
+    (45) expression -> . expression MOINS expression
+    (46) expression -> . expression FOIS expression
+    (47) expression -> . expression DIVISE expression
+    (48) expression -> . expression INFERIEUR expression
+    (49) expression -> . expression SUPERIEUR expression
+    (50) expression -> . expression EGAL_EGAL expression
+    (51) expression -> . MOINS expression
+    (52) expression -> . LPAREN expression RPAREN
 
-    NOMBRE          shift and go to state 18
-    IDENTIFIANT     shift and go to state 16
+    NOMBRE          shift and go to state 17
+    CHAINE          shift and go to state 18
+    IDENTIFIANT     shift and go to state 24
     MOINS           shift and go to state 19
-    LPAREN          shift and go to state 20
+    LPAREN          shift and go to state 7
 
-    expression                     shift and go to state 34
+    expression                     shift and go to state 50
 
 state 20
 
-    (21) expression -> LPAREN . expression RPAREN
-    (9) expression -> . NOMBRE
-    (10) expression -> . IDENTIFIANT
-    (11) expression -> . expression PLUS expression
-    (12) expression -> . expression MOINS expression
-    (13) expression -> . expression FOIS expression
-    (14) expression -> . expression DIVISE expression
-    (15) expression -> . expression INFERIEUR expression
-    (16) expression -> . expression SUPERIEUR expression
-    (17) expression -> . expression EGAL_EGAL expression
-    (20) expression -> . MOINS expression
-    (21) expression -> . LPAREN expression RPAREN
+    (3) instruction_list -> instruction_list instruction .
 
-    NOMBRE          shift and go to state 18
-    IDENTIFIANT     shift and go to state 16
-    MOINS           shift and go to state 19
-    LPAREN          shift and go to state 20
+    PRINT           reduce using rule 3 (instruction_list -> instruction_list instruction .)
+    IF              reduce using rule 3 (instruction_list -> instruction_list instruction .)
+    WHILE           reduce using rule 3 (instruction_list -> instruction_list instruction .)
+    FOR             reduce using rule 3 (instruction_list -> instruction_list instruction .)
+    FUNCTION        reduce using rule 3 (instruction_list -> instruction_list instruction .)
+    RETURN          reduce using rule 3 (instruction_list -> instruction_list instruction .)
+    POINT_VIRGULE   reduce using rule 3 (instruction_list -> instruction_list instruction .)
+    IDENTIFIANT     reduce using rule 3 (instruction_list -> instruction_list instruction .)
+    VAR             reduce using rule 3 (instruction_list -> instruction_list instruction .)
+    NOMBRE          reduce using rule 3 (instruction_list -> instruction_list instruction .)
+    CHAINE          reduce using rule 3 (instruction_list -> instruction_list instruction .)
+    MOINS           reduce using rule 3 (instruction_list -> instruction_list instruction .)
+    LPAREN          reduce using rule 3 (instruction_list -> instruction_list instruction .)
+    $end            reduce using rule 3 (instruction_list -> instruction_list instruction .)
+    RBRACE          reduce using rule 3 (instruction_list -> instruction_list instruction .)
 
-    expression                     shift and go to state 35
 
 state 21
 
-    (5) instruction -> PRINT LPAREN expression . RPAREN POINT_VIRGULE
-    (11) expression -> expression . PLUS expression
-    (12) expression -> expression . MOINS expression
-    (13) expression -> expression . FOIS expression
-    (14) expression -> expression . DIVISE expression
-    (15) expression -> expression . INFERIEUR expression
-    (16) expression -> expression . SUPERIEUR expression
-    (17) expression -> expression . EGAL_EGAL expression
+    (6) instruction -> simple_statement POINT_VIRGULE .
 
-    RPAREN          shift and go to state 36
-    PLUS            shift and go to state 27
-    MOINS           shift and go to state 28
-    FOIS            shift and go to state 29
-    DIVISE          shift and go to state 30
-    INFERIEUR       shift and go to state 31
-    SUPERIEUR       shift and go to state 32
-    EGAL_EGAL       shift and go to state 33
+    PRINT           reduce using rule 6 (instruction -> simple_statement POINT_VIRGULE .)
+    IF              reduce using rule 6 (instruction -> simple_statement POINT_VIRGULE .)
+    WHILE           reduce using rule 6 (instruction -> simple_statement POINT_VIRGULE .)
+    FOR             reduce using rule 6 (instruction -> simple_statement POINT_VIRGULE .)
+    FUNCTION        reduce using rule 6 (instruction -> simple_statement POINT_VIRGULE .)
+    RETURN          reduce using rule 6 (instruction -> simple_statement POINT_VIRGULE .)
+    POINT_VIRGULE   reduce using rule 6 (instruction -> simple_statement POINT_VIRGULE .)
+    IDENTIFIANT     reduce using rule 6 (instruction -> simple_statement POINT_VIRGULE .)
+    VAR             reduce using rule 6 (instruction -> simple_statement POINT_VIRGULE .)
+    NOMBRE          reduce using rule 6 (instruction -> simple_statement POINT_VIRGULE .)
+    CHAINE          reduce using rule 6 (instruction -> simple_statement POINT_VIRGULE .)
+    MOINS           reduce using rule 6 (instruction -> simple_statement POINT_VIRGULE .)
+    LPAREN          reduce using rule 6 (instruction -> simple_statement POINT_VIRGULE .)
+    $end            reduce using rule 6 (instruction -> simple_statement POINT_VIRGULE .)
+    RBRACE          reduce using rule 6 (instruction -> simple_statement POINT_VIRGULE .)
 
 
 state 22
 
-    (6) instruction -> IF LPAREN expression . RPAREN LBRACE bloc RBRACE
-    (7) instruction -> IF LPAREN expression . RPAREN LBRACE bloc RBRACE ELSE LBRACE bloc RBRACE
-    (11) expression -> expression . PLUS expression
-    (12) expression -> expression . MOINS expression
-    (13) expression -> expression . FOIS expression
-    (14) expression -> expression . DIVISE expression
-    (15) expression -> expression . INFERIEUR expression
-    (16) expression -> expression . SUPERIEUR expression
-    (17) expression -> expression . EGAL_EGAL expression
+    (14) instruction -> PRINT LPAREN . expression_list RPAREN POINT_VIRGULE
+    (38) expression_list -> . expression
+    (39) expression_list -> . expression_list VIRGULE expression
+    (40) expression -> . NOMBRE
+    (41) expression -> . CHAINE
+    (42) expression -> . IDENTIFIANT
+    (43) expression -> . IDENTIFIANT LPAREN argument_list_opt RPAREN
+    (44) expression -> . expression PLUS expression
+    (45) expression -> . expression MOINS expression
+    (46) expression -> . expression FOIS expression
+    (47) expression -> . expression DIVISE expression
+    (48) expression -> . expression INFERIEUR expression
+    (49) expression -> . expression SUPERIEUR expression
+    (50) expression -> . expression EGAL_EGAL expression
+    (51) expression -> . MOINS expression
+    (52) expression -> . LPAREN expression RPAREN
 
-    RPAREN          shift and go to state 37
-    PLUS            shift and go to state 27
-    MOINS           shift and go to state 28
-    FOIS            shift and go to state 29
-    DIVISE          shift and go to state 30
-    INFERIEUR       shift and go to state 31
-    SUPERIEUR       shift and go to state 32
-    EGAL_EGAL       shift and go to state 33
+    NOMBRE          shift and go to state 17
+    CHAINE          shift and go to state 18
+    IDENTIFIANT     shift and go to state 24
+    MOINS           shift and go to state 19
+    LPAREN          shift and go to state 7
 
+    expression_list                shift and go to state 51
+    expression                     shift and go to state 52
 
 state 23
 
-    (8) instruction -> WHILE LPAREN expression . RPAREN LBRACE bloc RBRACE
-    (11) expression -> expression . PLUS expression
-    (12) expression -> expression . MOINS expression
-    (13) expression -> expression . FOIS expression
-    (14) expression -> expression . DIVISE expression
-    (15) expression -> expression . INFERIEUR expression
-    (16) expression -> expression . SUPERIEUR expression
-    (17) expression -> expression . EGAL_EGAL expression
+    (52) expression -> LPAREN expression . RPAREN
+    (44) expression -> expression . PLUS expression
+    (45) expression -> expression . MOINS expression
+    (46) expression -> expression . FOIS expression
+    (47) expression -> expression . DIVISE expression
+    (48) expression -> expression . INFERIEUR expression
+    (49) expression -> expression . SUPERIEUR expression
+    (50) expression -> expression . EGAL_EGAL expression
 
-    RPAREN          shift and go to state 38
-    PLUS            shift and go to state 27
-    MOINS           shift and go to state 28
-    FOIS            shift and go to state 29
-    DIVISE          shift and go to state 30
-    INFERIEUR       shift and go to state 31
-    SUPERIEUR       shift and go to state 32
-    EGAL_EGAL       shift and go to state 33
+    RPAREN          shift and go to state 53
+    PLUS            shift and go to state 26
+    MOINS           shift and go to state 27
+    FOIS            shift and go to state 28
+    DIVISE          shift and go to state 29
+    INFERIEUR       shift and go to state 30
+    SUPERIEUR       shift and go to state 31
+    EGAL_EGAL       shift and go to state 32
 
 
 state 24
 
-    (19) instruction -> FOR LPAREN affectation_simple . POINT_VIRGULE expression POINT_VIRGULE affectation_simple RPAREN LBRACE bloc RBRACE
+    (42) expression -> IDENTIFIANT .
+    (43) expression -> IDENTIFIANT . LPAREN argument_list_opt RPAREN
 
-    POINT_VIRGULE   shift and go to state 39
+    RPAREN          reduce using rule 42 (expression -> IDENTIFIANT .)
+    PLUS            reduce using rule 42 (expression -> IDENTIFIANT .)
+    MOINS           reduce using rule 42 (expression -> IDENTIFIANT .)
+    FOIS            reduce using rule 42 (expression -> IDENTIFIANT .)
+    DIVISE          reduce using rule 42 (expression -> IDENTIFIANT .)
+    INFERIEUR       reduce using rule 42 (expression -> IDENTIFIANT .)
+    SUPERIEUR       reduce using rule 42 (expression -> IDENTIFIANT .)
+    EGAL_EGAL       reduce using rule 42 (expression -> IDENTIFIANT .)
+    POINT_VIRGULE   reduce using rule 42 (expression -> IDENTIFIANT .)
+    VIRGULE         reduce using rule 42 (expression -> IDENTIFIANT .)
+    LPAREN          shift and go to state 42
 
 
 state 25
 
-    (18) affectation_simple -> IDENTIFIANT . EGAL expression
+    (15) instruction -> expression POINT_VIRGULE .
 
-    EGAL            shift and go to state 40
+    PRINT           reduce using rule 15 (instruction -> expression POINT_VIRGULE .)
+    IF              reduce using rule 15 (instruction -> expression POINT_VIRGULE .)
+    WHILE           reduce using rule 15 (instruction -> expression POINT_VIRGULE .)
+    FOR             reduce using rule 15 (instruction -> expression POINT_VIRGULE .)
+    FUNCTION        reduce using rule 15 (instruction -> expression POINT_VIRGULE .)
+    RETURN          reduce using rule 15 (instruction -> expression POINT_VIRGULE .)
+    POINT_VIRGULE   reduce using rule 15 (instruction -> expression POINT_VIRGULE .)
+    IDENTIFIANT     reduce using rule 15 (instruction -> expression POINT_VIRGULE .)
+    VAR             reduce using rule 15 (instruction -> expression POINT_VIRGULE .)
+    NOMBRE          reduce using rule 15 (instruction -> expression POINT_VIRGULE .)
+    CHAINE          reduce using rule 15 (instruction -> expression POINT_VIRGULE .)
+    MOINS           reduce using rule 15 (instruction -> expression POINT_VIRGULE .)
+    LPAREN          reduce using rule 15 (instruction -> expression POINT_VIRGULE .)
+    $end            reduce using rule 15 (instruction -> expression POINT_VIRGULE .)
+    RBRACE          reduce using rule 15 (instruction -> expression POINT_VIRGULE .)
 
 
 state 26
 
-    (4) instruction -> IDENTIFIANT EGAL expression POINT_VIRGULE .
+    (44) expression -> expression PLUS . expression
+    (40) expression -> . NOMBRE
+    (41) expression -> . CHAINE
+    (42) expression -> . IDENTIFIANT
+    (43) expression -> . IDENTIFIANT LPAREN argument_list_opt RPAREN
+    (44) expression -> . expression PLUS expression
+    (45) expression -> . expression MOINS expression
+    (46) expression -> . expression FOIS expression
+    (47) expression -> . expression DIVISE expression
+    (48) expression -> . expression INFERIEUR expression
+    (49) expression -> . expression SUPERIEUR expression
+    (50) expression -> . expression EGAL_EGAL expression
+    (51) expression -> . MOINS expression
+    (52) expression -> . LPAREN expression RPAREN
 
-    IDENTIFIANT     reduce using rule 4 (instruction -> IDENTIFIANT EGAL expression POINT_VIRGULE .)
-    PRINT           reduce using rule 4 (instruction -> IDENTIFIANT EGAL expression POINT_VIRGULE .)
-    IF              reduce using rule 4 (instruction -> IDENTIFIANT EGAL expression POINT_VIRGULE .)
-    WHILE           reduce using rule 4 (instruction -> IDENTIFIANT EGAL expression POINT_VIRGULE .)
-    FOR             reduce using rule 4 (instruction -> IDENTIFIANT EGAL expression POINT_VIRGULE .)
-    POINT_VIRGULE   reduce using rule 4 (instruction -> IDENTIFIANT EGAL expression POINT_VIRGULE .)
-    $end            reduce using rule 4 (instruction -> IDENTIFIANT EGAL expression POINT_VIRGULE .)
-    RBRACE          reduce using rule 4 (instruction -> IDENTIFIANT EGAL expression POINT_VIRGULE .)
+    NOMBRE          shift and go to state 17
+    CHAINE          shift and go to state 18
+    IDENTIFIANT     shift and go to state 24
+    MOINS           shift and go to state 19
+    LPAREN          shift and go to state 7
 
+    expression                     shift and go to state 54
 
 state 27
 
-    (11) expression -> expression PLUS . expression
-    (9) expression -> . NOMBRE
-    (10) expression -> . IDENTIFIANT
-    (11) expression -> . expression PLUS expression
-    (12) expression -> . expression MOINS expression
-    (13) expression -> . expression FOIS expression
-    (14) expression -> . expression DIVISE expression
-    (15) expression -> . expression INFERIEUR expression
-    (16) expression -> . expression SUPERIEUR expression
-    (17) expression -> . expression EGAL_EGAL expression
-    (20) expression -> . MOINS expression
-    (21) expression -> . LPAREN expression RPAREN
+    (45) expression -> expression MOINS . expression
+    (40) expression -> . NOMBRE
+    (41) expression -> . CHAINE
+    (42) expression -> . IDENTIFIANT
+    (43) expression -> . IDENTIFIANT LPAREN argument_list_opt RPAREN
+    (44) expression -> . expression PLUS expression
+    (45) expression -> . expression MOINS expression
+    (46) expression -> . expression FOIS expression
+    (47) expression -> . expression DIVISE expression
+    (48) expression -> . expression INFERIEUR expression
+    (49) expression -> . expression SUPERIEUR expression
+    (50) expression -> . expression EGAL_EGAL expression
+    (51) expression -> . MOINS expression
+    (52) expression -> . LPAREN expression RPAREN
 
-    NOMBRE          shift and go to state 18
-    IDENTIFIANT     shift and go to state 16
+    NOMBRE          shift and go to state 17
+    CHAINE          shift and go to state 18
+    IDENTIFIANT     shift and go to state 24
     MOINS           shift and go to state 19
-    LPAREN          shift and go to state 20
+    LPAREN          shift and go to state 7
 
-    expression                     shift and go to state 41
+    expression                     shift and go to state 55
 
 state 28
 
-    (12) expression -> expression MOINS . expression
-    (9) expression -> . NOMBRE
-    (10) expression -> . IDENTIFIANT
-    (11) expression -> . expression PLUS expression
-    (12) expression -> . expression MOINS expression
-    (13) expression -> . expression FOIS expression
-    (14) expression -> . expression DIVISE expression
-    (15) expression -> . expression INFERIEUR expression
-    (16) expression -> . expression SUPERIEUR expression
-    (17) expression -> . expression EGAL_EGAL expression
-    (20) expression -> . MOINS expression
-    (21) expression -> . LPAREN expression RPAREN
+    (46) expression -> expression FOIS . expression
+    (40) expression -> . NOMBRE
+    (41) expression -> . CHAINE
+    (42) expression -> . IDENTIFIANT
+    (43) expression -> . IDENTIFIANT LPAREN argument_list_opt RPAREN
+    (44) expression -> . expression PLUS expression
+    (45) expression -> . expression MOINS expression
+    (46) expression -> . expression FOIS expression
+    (47) expression -> . expression DIVISE expression
+    (48) expression -> . expression INFERIEUR expression
+    (49) expression -> . expression SUPERIEUR expression
+    (50) expression -> . expression EGAL_EGAL expression
+    (51) expression -> . MOINS expression
+    (52) expression -> . LPAREN expression RPAREN
 
-    NOMBRE          shift and go to state 18
-    IDENTIFIANT     shift and go to state 16
+    NOMBRE          shift and go to state 17
+    CHAINE          shift and go to state 18
+    IDENTIFIANT     shift and go to state 24
     MOINS           shift and go to state 19
-    LPAREN          shift and go to state 20
+    LPAREN          shift and go to state 7
 
-    expression                     shift and go to state 42
+    expression                     shift and go to state 56
 
 state 29
 
-    (13) expression -> expression FOIS . expression
-    (9) expression -> . NOMBRE
-    (10) expression -> . IDENTIFIANT
-    (11) expression -> . expression PLUS expression
-    (12) expression -> . expression MOINS expression
-    (13) expression -> . expression FOIS expression
-    (14) expression -> . expression DIVISE expression
-    (15) expression -> . expression INFERIEUR expression
-    (16) expression -> . expression SUPERIEUR expression
-    (17) expression -> . expression EGAL_EGAL expression
-    (20) expression -> . MOINS expression
-    (21) expression -> . LPAREN expression RPAREN
+    (47) expression -> expression DIVISE . expression
+    (40) expression -> . NOMBRE
+    (41) expression -> . CHAINE
+    (42) expression -> . IDENTIFIANT
+    (43) expression -> . IDENTIFIANT LPAREN argument_list_opt RPAREN
+    (44) expression -> . expression PLUS expression
+    (45) expression -> . expression MOINS expression
+    (46) expression -> . expression FOIS expression
+    (47) expression -> . expression DIVISE expression
+    (48) expression -> . expression INFERIEUR expression
+    (49) expression -> . expression SUPERIEUR expression
+    (50) expression -> . expression EGAL_EGAL expression
+    (51) expression -> . MOINS expression
+    (52) expression -> . LPAREN expression RPAREN
 
-    NOMBRE          shift and go to state 18
-    IDENTIFIANT     shift and go to state 16
+    NOMBRE          shift and go to state 17
+    CHAINE          shift and go to state 18
+    IDENTIFIANT     shift and go to state 24
     MOINS           shift and go to state 19
-    LPAREN          shift and go to state 20
+    LPAREN          shift and go to state 7
 
-    expression                     shift and go to state 43
+    expression                     shift and go to state 57
 
 state 30
 
-    (14) expression -> expression DIVISE . expression
-    (9) expression -> . NOMBRE
-    (10) expression -> . IDENTIFIANT
-    (11) expression -> . expression PLUS expression
-    (12) expression -> . expression MOINS expression
-    (13) expression -> . expression FOIS expression
-    (14) expression -> . expression DIVISE expression
-    (15) expression -> . expression INFERIEUR expression
-    (16) expression -> . expression SUPERIEUR expression
-    (17) expression -> . expression EGAL_EGAL expression
-    (20) expression -> . MOINS expression
-    (21) expression -> . LPAREN expression RPAREN
+    (48) expression -> expression INFERIEUR . expression
+    (40) expression -> . NOMBRE
+    (41) expression -> . CHAINE
+    (42) expression -> . IDENTIFIANT
+    (43) expression -> . IDENTIFIANT LPAREN argument_list_opt RPAREN
+    (44) expression -> . expression PLUS expression
+    (45) expression -> . expression MOINS expression
+    (46) expression -> . expression FOIS expression
+    (47) expression -> . expression DIVISE expression
+    (48) expression -> . expression INFERIEUR expression
+    (49) expression -> . expression SUPERIEUR expression
+    (50) expression -> . expression EGAL_EGAL expression
+    (51) expression -> . MOINS expression
+    (52) expression -> . LPAREN expression RPAREN
 
-    NOMBRE          shift and go to state 18
-    IDENTIFIANT     shift and go to state 16
+    NOMBRE          shift and go to state 17
+    CHAINE          shift and go to state 18
+    IDENTIFIANT     shift and go to state 24
     MOINS           shift and go to state 19
-    LPAREN          shift and go to state 20
+    LPAREN          shift and go to state 7
 
-    expression                     shift and go to state 44
+    expression                     shift and go to state 58
 
 state 31
 
-    (15) expression -> expression INFERIEUR . expression
-    (9) expression -> . NOMBRE
-    (10) expression -> . IDENTIFIANT
-    (11) expression -> . expression PLUS expression
-    (12) expression -> . expression MOINS expression
-    (13) expression -> . expression FOIS expression
-    (14) expression -> . expression DIVISE expression
-    (15) expression -> . expression INFERIEUR expression
-    (16) expression -> . expression SUPERIEUR expression
-    (17) expression -> . expression EGAL_EGAL expression
-    (20) expression -> . MOINS expression
-    (21) expression -> . LPAREN expression RPAREN
+    (49) expression -> expression SUPERIEUR . expression
+    (40) expression -> . NOMBRE
+    (41) expression -> . CHAINE
+    (42) expression -> . IDENTIFIANT
+    (43) expression -> . IDENTIFIANT LPAREN argument_list_opt RPAREN
+    (44) expression -> . expression PLUS expression
+    (45) expression -> . expression MOINS expression
+    (46) expression -> . expression FOIS expression
+    (47) expression -> . expression DIVISE expression
+    (48) expression -> . expression INFERIEUR expression
+    (49) expression -> . expression SUPERIEUR expression
+    (50) expression -> . expression EGAL_EGAL expression
+    (51) expression -> . MOINS expression
+    (52) expression -> . LPAREN expression RPAREN
 
-    NOMBRE          shift and go to state 18
-    IDENTIFIANT     shift and go to state 16
+    NOMBRE          shift and go to state 17
+    CHAINE          shift and go to state 18
+    IDENTIFIANT     shift and go to state 24
     MOINS           shift and go to state 19
-    LPAREN          shift and go to state 20
+    LPAREN          shift and go to state 7
 
-    expression                     shift and go to state 45
+    expression                     shift and go to state 59
 
 state 32
 
-    (16) expression -> expression SUPERIEUR . expression
-    (9) expression -> . NOMBRE
-    (10) expression -> . IDENTIFIANT
-    (11) expression -> . expression PLUS expression
-    (12) expression -> . expression MOINS expression
-    (13) expression -> . expression FOIS expression
-    (14) expression -> . expression DIVISE expression
-    (15) expression -> . expression INFERIEUR expression
-    (16) expression -> . expression SUPERIEUR expression
-    (17) expression -> . expression EGAL_EGAL expression
-    (20) expression -> . MOINS expression
-    (21) expression -> . LPAREN expression RPAREN
+    (50) expression -> expression EGAL_EGAL . expression
+    (40) expression -> . NOMBRE
+    (41) expression -> . CHAINE
+    (42) expression -> . IDENTIFIANT
+    (43) expression -> . IDENTIFIANT LPAREN argument_list_opt RPAREN
+    (44) expression -> . expression PLUS expression
+    (45) expression -> . expression MOINS expression
+    (46) expression -> . expression FOIS expression
+    (47) expression -> . expression DIVISE expression
+    (48) expression -> . expression INFERIEUR expression
+    (49) expression -> . expression SUPERIEUR expression
+    (50) expression -> . expression EGAL_EGAL expression
+    (51) expression -> . MOINS expression
+    (52) expression -> . LPAREN expression RPAREN
 
-    NOMBRE          shift and go to state 18
-    IDENTIFIANT     shift and go to state 16
+    NOMBRE          shift and go to state 17
+    CHAINE          shift and go to state 18
+    IDENTIFIANT     shift and go to state 24
     MOINS           shift and go to state 19
-    LPAREN          shift and go to state 20
+    LPAREN          shift and go to state 7
 
-    expression                     shift and go to state 46
+    expression                     shift and go to state 60
 
 state 33
 
-    (17) expression -> expression EGAL_EGAL . expression
-    (9) expression -> . NOMBRE
-    (10) expression -> . IDENTIFIANT
-    (11) expression -> . expression PLUS expression
-    (12) expression -> . expression MOINS expression
-    (13) expression -> . expression FOIS expression
-    (14) expression -> . expression DIVISE expression
-    (15) expression -> . expression INFERIEUR expression
-    (16) expression -> . expression SUPERIEUR expression
-    (17) expression -> . expression EGAL_EGAL expression
-    (20) expression -> . MOINS expression
-    (21) expression -> . LPAREN expression RPAREN
+    (16) instruction -> IF LPAREN . expression RPAREN block
+    (17) instruction -> IF LPAREN . expression RPAREN block ELSE block
+    (40) expression -> . NOMBRE
+    (41) expression -> . CHAINE
+    (42) expression -> . IDENTIFIANT
+    (43) expression -> . IDENTIFIANT LPAREN argument_list_opt RPAREN
+    (44) expression -> . expression PLUS expression
+    (45) expression -> . expression MOINS expression
+    (46) expression -> . expression FOIS expression
+    (47) expression -> . expression DIVISE expression
+    (48) expression -> . expression INFERIEUR expression
+    (49) expression -> . expression SUPERIEUR expression
+    (50) expression -> . expression EGAL_EGAL expression
+    (51) expression -> . MOINS expression
+    (52) expression -> . LPAREN expression RPAREN
 
-    NOMBRE          shift and go to state 18
-    IDENTIFIANT     shift and go to state 16
+    NOMBRE          shift and go to state 17
+    CHAINE          shift and go to state 18
+    IDENTIFIANT     shift and go to state 24
     MOINS           shift and go to state 19
-    LPAREN          shift and go to state 20
+    LPAREN          shift and go to state 7
 
-    expression                     shift and go to state 47
+    expression                     shift and go to state 61
 
 state 34
 
-    (20) expression -> MOINS expression .
-    (11) expression -> expression . PLUS expression
-    (12) expression -> expression . MOINS expression
-    (13) expression -> expression . FOIS expression
-    (14) expression -> expression . DIVISE expression
-    (15) expression -> expression . INFERIEUR expression
-    (16) expression -> expression . SUPERIEUR expression
-    (17) expression -> expression . EGAL_EGAL expression
+    (18) instruction -> WHILE LPAREN . expression RPAREN block
+    (40) expression -> . NOMBRE
+    (41) expression -> . CHAINE
+    (42) expression -> . IDENTIFIANT
+    (43) expression -> . IDENTIFIANT LPAREN argument_list_opt RPAREN
+    (44) expression -> . expression PLUS expression
+    (45) expression -> . expression MOINS expression
+    (46) expression -> . expression FOIS expression
+    (47) expression -> . expression DIVISE expression
+    (48) expression -> . expression INFERIEUR expression
+    (49) expression -> . expression SUPERIEUR expression
+    (50) expression -> . expression EGAL_EGAL expression
+    (51) expression -> . MOINS expression
+    (52) expression -> . LPAREN expression RPAREN
 
-    POINT_VIRGULE   reduce using rule 20 (expression -> MOINS expression .)
-    PLUS            reduce using rule 20 (expression -> MOINS expression .)
-    MOINS           reduce using rule 20 (expression -> MOINS expression .)
-    FOIS            reduce using rule 20 (expression -> MOINS expression .)
-    DIVISE          reduce using rule 20 (expression -> MOINS expression .)
-    INFERIEUR       reduce using rule 20 (expression -> MOINS expression .)
-    SUPERIEUR       reduce using rule 20 (expression -> MOINS expression .)
-    EGAL_EGAL       reduce using rule 20 (expression -> MOINS expression .)
-    RPAREN          reduce using rule 20 (expression -> MOINS expression .)
+    NOMBRE          shift and go to state 17
+    CHAINE          shift and go to state 18
+    IDENTIFIANT     shift and go to state 24
+    MOINS           shift and go to state 19
+    LPAREN          shift and go to state 7
 
-  ! PLUS            [ shift and go to state 27 ]
-  ! MOINS           [ shift and go to state 28 ]
-  ! FOIS            [ shift and go to state 29 ]
-  ! DIVISE          [ shift and go to state 30 ]
-  ! INFERIEUR       [ shift and go to state 31 ]
-  ! SUPERIEUR       [ shift and go to state 32 ]
-  ! EGAL_EGAL       [ shift and go to state 33 ]
-
+    expression                     shift and go to state 62
 
 state 35
 
-    (21) expression -> LPAREN expression . RPAREN
-    (11) expression -> expression . PLUS expression
-    (12) expression -> expression . MOINS expression
-    (13) expression -> expression . FOIS expression
-    (14) expression -> expression . DIVISE expression
-    (15) expression -> expression . INFERIEUR expression
-    (16) expression -> expression . SUPERIEUR expression
-    (17) expression -> expression . EGAL_EGAL expression
+    (19) instruction -> FOR LPAREN . for_part POINT_VIRGULE expression POINT_VIRGULE for_part RPAREN block
+    (24) for_part -> . simple_statement
+    (25) for_part -> . empty
+    (7) simple_statement -> . id_list EGAL expression_list
+    (8) simple_statement -> . IDENTIFIANT PLUS_EGAL expression
+    (9) simple_statement -> . IDENTIFIANT MOINS_EGAL expression
+    (10) simple_statement -> . IDENTIFIANT FOIS_EGAL expression
+    (11) simple_statement -> . IDENTIFIANT DIVISE_EGAL expression
+    (12) simple_statement -> . IDENTIFIANT PLUS_PLUS
+    (13) simple_statement -> . VAR declaration_list
+    (53) empty -> .
+    (30) id_list -> . IDENTIFIANT
+    (31) id_list -> . id_list VIRGULE IDENTIFIANT
 
-    RPAREN          shift and go to state 48
-    PLUS            shift and go to state 27
-    MOINS           shift and go to state 28
-    FOIS            shift and go to state 29
-    DIVISE          shift and go to state 30
-    INFERIEUR       shift and go to state 31
-    SUPERIEUR       shift and go to state 32
-    EGAL_EGAL       shift and go to state 33
+    IDENTIFIANT     shift and go to state 66
+    VAR             shift and go to state 16
+    POINT_VIRGULE   reduce using rule 53 (empty -> .)
 
+    for_part                       shift and go to state 63
+    simple_statement               shift and go to state 64
+    empty                          shift and go to state 65
+    id_list                        shift and go to state 15
 
 state 36
 
-    (5) instruction -> PRINT LPAREN expression RPAREN . POINT_VIRGULE
+    (20) instruction -> FUNCTION IDENTIFIANT . LPAREN param_list_opt RPAREN block
 
-    POINT_VIRGULE   shift and go to state 49
+    LPAREN          shift and go to state 67
 
 
 state 37
 
-    (6) instruction -> IF LPAREN expression RPAREN . LBRACE bloc RBRACE
-    (7) instruction -> IF LPAREN expression RPAREN . LBRACE bloc RBRACE ELSE LBRACE bloc RBRACE
+    (8) simple_statement -> IDENTIFIANT PLUS_EGAL . expression
+    (40) expression -> . NOMBRE
+    (41) expression -> . CHAINE
+    (42) expression -> . IDENTIFIANT
+    (43) expression -> . IDENTIFIANT LPAREN argument_list_opt RPAREN
+    (44) expression -> . expression PLUS expression
+    (45) expression -> . expression MOINS expression
+    (46) expression -> . expression FOIS expression
+    (47) expression -> . expression DIVISE expression
+    (48) expression -> . expression INFERIEUR expression
+    (49) expression -> . expression SUPERIEUR expression
+    (50) expression -> . expression EGAL_EGAL expression
+    (51) expression -> . MOINS expression
+    (52) expression -> . LPAREN expression RPAREN
 
-    LBRACE          shift and go to state 50
+    NOMBRE          shift and go to state 17
+    CHAINE          shift and go to state 18
+    IDENTIFIANT     shift and go to state 24
+    MOINS           shift and go to state 19
+    LPAREN          shift and go to state 7
 
+    expression                     shift and go to state 68
 
 state 38
 
-    (8) instruction -> WHILE LPAREN expression RPAREN . LBRACE bloc RBRACE
+    (9) simple_statement -> IDENTIFIANT MOINS_EGAL . expression
+    (40) expression -> . NOMBRE
+    (41) expression -> . CHAINE
+    (42) expression -> . IDENTIFIANT
+    (43) expression -> . IDENTIFIANT LPAREN argument_list_opt RPAREN
+    (44) expression -> . expression PLUS expression
+    (45) expression -> . expression MOINS expression
+    (46) expression -> . expression FOIS expression
+    (47) expression -> . expression DIVISE expression
+    (48) expression -> . expression INFERIEUR expression
+    (49) expression -> . expression SUPERIEUR expression
+    (50) expression -> . expression EGAL_EGAL expression
+    (51) expression -> . MOINS expression
+    (52) expression -> . LPAREN expression RPAREN
 
-    LBRACE          shift and go to state 51
+    NOMBRE          shift and go to state 17
+    CHAINE          shift and go to state 18
+    IDENTIFIANT     shift and go to state 24
+    MOINS           shift and go to state 19
+    LPAREN          shift and go to state 7
 
+    expression                     shift and go to state 69
 
 state 39
 
-    (19) instruction -> FOR LPAREN affectation_simple POINT_VIRGULE . expression POINT_VIRGULE affectation_simple RPAREN LBRACE bloc RBRACE
-    (9) expression -> . NOMBRE
-    (10) expression -> . IDENTIFIANT
-    (11) expression -> . expression PLUS expression
-    (12) expression -> . expression MOINS expression
-    (13) expression -> . expression FOIS expression
-    (14) expression -> . expression DIVISE expression
-    (15) expression -> . expression INFERIEUR expression
-    (16) expression -> . expression SUPERIEUR expression
-    (17) expression -> . expression EGAL_EGAL expression
-    (20) expression -> . MOINS expression
-    (21) expression -> . LPAREN expression RPAREN
+    (10) simple_statement -> IDENTIFIANT FOIS_EGAL . expression
+    (40) expression -> . NOMBRE
+    (41) expression -> . CHAINE
+    (42) expression -> . IDENTIFIANT
+    (43) expression -> . IDENTIFIANT LPAREN argument_list_opt RPAREN
+    (44) expression -> . expression PLUS expression
+    (45) expression -> . expression MOINS expression
+    (46) expression -> . expression FOIS expression
+    (47) expression -> . expression DIVISE expression
+    (48) expression -> . expression INFERIEUR expression
+    (49) expression -> . expression SUPERIEUR expression
+    (50) expression -> . expression EGAL_EGAL expression
+    (51) expression -> . MOINS expression
+    (52) expression -> . LPAREN expression RPAREN
 
-    NOMBRE          shift and go to state 18
-    IDENTIFIANT     shift and go to state 16
+    NOMBRE          shift and go to state 17
+    CHAINE          shift and go to state 18
+    IDENTIFIANT     shift and go to state 24
     MOINS           shift and go to state 19
-    LPAREN          shift and go to state 20
+    LPAREN          shift and go to state 7
 
-    expression                     shift and go to state 52
+    expression                     shift and go to state 70
 
 state 40
 
-    (18) affectation_simple -> IDENTIFIANT EGAL . expression
-    (9) expression -> . NOMBRE
-    (10) expression -> . IDENTIFIANT
-    (11) expression -> . expression PLUS expression
-    (12) expression -> . expression MOINS expression
-    (13) expression -> . expression FOIS expression
-    (14) expression -> . expression DIVISE expression
-    (15) expression -> . expression INFERIEUR expression
-    (16) expression -> . expression SUPERIEUR expression
-    (17) expression -> . expression EGAL_EGAL expression
-    (20) expression -> . MOINS expression
-    (21) expression -> . LPAREN expression RPAREN
+    (11) simple_statement -> IDENTIFIANT DIVISE_EGAL . expression
+    (40) expression -> . NOMBRE
+    (41) expression -> . CHAINE
+    (42) expression -> . IDENTIFIANT
+    (43) expression -> . IDENTIFIANT LPAREN argument_list_opt RPAREN
+    (44) expression -> . expression PLUS expression
+    (45) expression -> . expression MOINS expression
+    (46) expression -> . expression FOIS expression
+    (47) expression -> . expression DIVISE expression
+    (48) expression -> . expression INFERIEUR expression
+    (49) expression -> . expression SUPERIEUR expression
+    (50) expression -> . expression EGAL_EGAL expression
+    (51) expression -> . MOINS expression
+    (52) expression -> . LPAREN expression RPAREN
 
-    NOMBRE          shift and go to state 18
-    IDENTIFIANT     shift and go to state 16
+    NOMBRE          shift and go to state 17
+    CHAINE          shift and go to state 18
+    IDENTIFIANT     shift and go to state 24
     MOINS           shift and go to state 19
-    LPAREN          shift and go to state 20
+    LPAREN          shift and go to state 7
 
-    expression                     shift and go to state 53
+    expression                     shift and go to state 71
 
 state 41
 
-    (11) expression -> expression PLUS expression .
-    (11) expression -> expression . PLUS expression
-    (12) expression -> expression . MOINS expression
-    (13) expression -> expression . FOIS expression
-    (14) expression -> expression . DIVISE expression
-    (15) expression -> expression . INFERIEUR expression
-    (16) expression -> expression . SUPERIEUR expression
-    (17) expression -> expression . EGAL_EGAL expression
+    (12) simple_statement -> IDENTIFIANT PLUS_PLUS .
 
-    POINT_VIRGULE   reduce using rule 11 (expression -> expression PLUS expression .)
-    PLUS            reduce using rule 11 (expression -> expression PLUS expression .)
-    MOINS           reduce using rule 11 (expression -> expression PLUS expression .)
-    INFERIEUR       reduce using rule 11 (expression -> expression PLUS expression .)
-    SUPERIEUR       reduce using rule 11 (expression -> expression PLUS expression .)
-    EGAL_EGAL       reduce using rule 11 (expression -> expression PLUS expression .)
-    RPAREN          reduce using rule 11 (expression -> expression PLUS expression .)
-    FOIS            shift and go to state 29
-    DIVISE          shift and go to state 30
-
-  ! FOIS            [ reduce using rule 11 (expression -> expression PLUS expression .) ]
-  ! DIVISE          [ reduce using rule 11 (expression -> expression PLUS expression .) ]
-  ! PLUS            [ shift and go to state 27 ]
-  ! MOINS           [ shift and go to state 28 ]
-  ! INFERIEUR       [ shift and go to state 31 ]
-  ! SUPERIEUR       [ shift and go to state 32 ]
-  ! EGAL_EGAL       [ shift and go to state 33 ]
+    POINT_VIRGULE   reduce using rule 12 (simple_statement -> IDENTIFIANT PLUS_PLUS .)
+    RPAREN          reduce using rule 12 (simple_statement -> IDENTIFIANT PLUS_PLUS .)
 
 
 state 42
 
-    (12) expression -> expression MOINS expression .
-    (11) expression -> expression . PLUS expression
-    (12) expression -> expression . MOINS expression
-    (13) expression -> expression . FOIS expression
-    (14) expression -> expression . DIVISE expression
-    (15) expression -> expression . INFERIEUR expression
-    (16) expression -> expression . SUPERIEUR expression
-    (17) expression -> expression . EGAL_EGAL expression
+    (43) expression -> IDENTIFIANT LPAREN . argument_list_opt RPAREN
+    (36) argument_list_opt -> . empty
+    (37) argument_list_opt -> . expression_list
+    (53) empty -> .
+    (38) expression_list -> . expression
+    (39) expression_list -> . expression_list VIRGULE expression
+    (40) expression -> . NOMBRE
+    (41) expression -> . CHAINE
+    (42) expression -> . IDENTIFIANT
+    (43) expression -> . IDENTIFIANT LPAREN argument_list_opt RPAREN
+    (44) expression -> . expression PLUS expression
+    (45) expression -> . expression MOINS expression
+    (46) expression -> . expression FOIS expression
+    (47) expression -> . expression DIVISE expression
+    (48) expression -> . expression INFERIEUR expression
+    (49) expression -> . expression SUPERIEUR expression
+    (50) expression -> . expression EGAL_EGAL expression
+    (51) expression -> . MOINS expression
+    (52) expression -> . LPAREN expression RPAREN
 
-    POINT_VIRGULE   reduce using rule 12 (expression -> expression MOINS expression .)
-    PLUS            reduce using rule 12 (expression -> expression MOINS expression .)
-    MOINS           reduce using rule 12 (expression -> expression MOINS expression .)
-    INFERIEUR       reduce using rule 12 (expression -> expression MOINS expression .)
-    SUPERIEUR       reduce using rule 12 (expression -> expression MOINS expression .)
-    EGAL_EGAL       reduce using rule 12 (expression -> expression MOINS expression .)
-    RPAREN          reduce using rule 12 (expression -> expression MOINS expression .)
-    FOIS            shift and go to state 29
-    DIVISE          shift and go to state 30
+    RPAREN          reduce using rule 53 (empty -> .)
+    NOMBRE          shift and go to state 17
+    CHAINE          shift and go to state 18
+    IDENTIFIANT     shift and go to state 24
+    MOINS           shift and go to state 19
+    LPAREN          shift and go to state 7
 
-  ! FOIS            [ reduce using rule 12 (expression -> expression MOINS expression .) ]
-  ! DIVISE          [ reduce using rule 12 (expression -> expression MOINS expression .) ]
-  ! PLUS            [ shift and go to state 27 ]
-  ! MOINS           [ shift and go to state 28 ]
-  ! INFERIEUR       [ shift and go to state 31 ]
-  ! SUPERIEUR       [ shift and go to state 32 ]
-  ! EGAL_EGAL       [ shift and go to state 33 ]
-
+    argument_list_opt              shift and go to state 72
+    empty                          shift and go to state 73
+    expression_list                shift and go to state 74
+    expression                     shift and go to state 52
 
 state 43
 
-    (13) expression -> expression FOIS expression .
-    (11) expression -> expression . PLUS expression
-    (12) expression -> expression . MOINS expression
-    (13) expression -> expression . FOIS expression
-    (14) expression -> expression . DIVISE expression
-    (15) expression -> expression . INFERIEUR expression
-    (16) expression -> expression . SUPERIEUR expression
-    (17) expression -> expression . EGAL_EGAL expression
+    (21) instruction -> RETURN expression . POINT_VIRGULE
+    (44) expression -> expression . PLUS expression
+    (45) expression -> expression . MOINS expression
+    (46) expression -> expression . FOIS expression
+    (47) expression -> expression . DIVISE expression
+    (48) expression -> expression . INFERIEUR expression
+    (49) expression -> expression . SUPERIEUR expression
+    (50) expression -> expression . EGAL_EGAL expression
 
-    POINT_VIRGULE   reduce using rule 13 (expression -> expression FOIS expression .)
-    PLUS            reduce using rule 13 (expression -> expression FOIS expression .)
-    MOINS           reduce using rule 13 (expression -> expression FOIS expression .)
-    FOIS            reduce using rule 13 (expression -> expression FOIS expression .)
-    DIVISE          reduce using rule 13 (expression -> expression FOIS expression .)
-    INFERIEUR       reduce using rule 13 (expression -> expression FOIS expression .)
-    SUPERIEUR       reduce using rule 13 (expression -> expression FOIS expression .)
-    EGAL_EGAL       reduce using rule 13 (expression -> expression FOIS expression .)
-    RPAREN          reduce using rule 13 (expression -> expression FOIS expression .)
-
-  ! PLUS            [ shift and go to state 27 ]
-  ! MOINS           [ shift and go to state 28 ]
-  ! FOIS            [ shift and go to state 29 ]
-  ! DIVISE          [ shift and go to state 30 ]
-  ! INFERIEUR       [ shift and go to state 31 ]
-  ! SUPERIEUR       [ shift and go to state 32 ]
-  ! EGAL_EGAL       [ shift and go to state 33 ]
+    POINT_VIRGULE   shift and go to state 75
+    PLUS            shift and go to state 26
+    MOINS           shift and go to state 27
+    FOIS            shift and go to state 28
+    DIVISE          shift and go to state 29
+    INFERIEUR       shift and go to state 30
+    SUPERIEUR       shift and go to state 31
+    EGAL_EGAL       shift and go to state 32
 
 
 state 44
 
-    (14) expression -> expression DIVISE expression .
-    (11) expression -> expression . PLUS expression
-    (12) expression -> expression . MOINS expression
-    (13) expression -> expression . FOIS expression
-    (14) expression -> expression . DIVISE expression
-    (15) expression -> expression . INFERIEUR expression
-    (16) expression -> expression . SUPERIEUR expression
-    (17) expression -> expression . EGAL_EGAL expression
+    (22) instruction -> RETURN POINT_VIRGULE .
 
-    POINT_VIRGULE   reduce using rule 14 (expression -> expression DIVISE expression .)
-    PLUS            reduce using rule 14 (expression -> expression DIVISE expression .)
-    MOINS           reduce using rule 14 (expression -> expression DIVISE expression .)
-    FOIS            reduce using rule 14 (expression -> expression DIVISE expression .)
-    DIVISE          reduce using rule 14 (expression -> expression DIVISE expression .)
-    INFERIEUR       reduce using rule 14 (expression -> expression DIVISE expression .)
-    SUPERIEUR       reduce using rule 14 (expression -> expression DIVISE expression .)
-    EGAL_EGAL       reduce using rule 14 (expression -> expression DIVISE expression .)
-    RPAREN          reduce using rule 14 (expression -> expression DIVISE expression .)
-
-  ! PLUS            [ shift and go to state 27 ]
-  ! MOINS           [ shift and go to state 28 ]
-  ! FOIS            [ shift and go to state 29 ]
-  ! DIVISE          [ shift and go to state 30 ]
-  ! INFERIEUR       [ shift and go to state 31 ]
-  ! SUPERIEUR       [ shift and go to state 32 ]
-  ! EGAL_EGAL       [ shift and go to state 33 ]
+    PRINT           reduce using rule 22 (instruction -> RETURN POINT_VIRGULE .)
+    IF              reduce using rule 22 (instruction -> RETURN POINT_VIRGULE .)
+    WHILE           reduce using rule 22 (instruction -> RETURN POINT_VIRGULE .)
+    FOR             reduce using rule 22 (instruction -> RETURN POINT_VIRGULE .)
+    FUNCTION        reduce using rule 22 (instruction -> RETURN POINT_VIRGULE .)
+    RETURN          reduce using rule 22 (instruction -> RETURN POINT_VIRGULE .)
+    POINT_VIRGULE   reduce using rule 22 (instruction -> RETURN POINT_VIRGULE .)
+    IDENTIFIANT     reduce using rule 22 (instruction -> RETURN POINT_VIRGULE .)
+    VAR             reduce using rule 22 (instruction -> RETURN POINT_VIRGULE .)
+    NOMBRE          reduce using rule 22 (instruction -> RETURN POINT_VIRGULE .)
+    CHAINE          reduce using rule 22 (instruction -> RETURN POINT_VIRGULE .)
+    MOINS           reduce using rule 22 (instruction -> RETURN POINT_VIRGULE .)
+    LPAREN          reduce using rule 22 (instruction -> RETURN POINT_VIRGULE .)
+    $end            reduce using rule 22 (instruction -> RETURN POINT_VIRGULE .)
+    RBRACE          reduce using rule 22 (instruction -> RETURN POINT_VIRGULE .)
 
 
 state 45
 
-    (15) expression -> expression INFERIEUR expression .
-    (11) expression -> expression . PLUS expression
-    (12) expression -> expression . MOINS expression
-    (13) expression -> expression . FOIS expression
-    (14) expression -> expression . DIVISE expression
-    (15) expression -> expression . INFERIEUR expression
-    (16) expression -> expression . SUPERIEUR expression
-    (17) expression -> expression . EGAL_EGAL expression
+    (7) simple_statement -> id_list EGAL . expression_list
+    (38) expression_list -> . expression
+    (39) expression_list -> . expression_list VIRGULE expression
+    (40) expression -> . NOMBRE
+    (41) expression -> . CHAINE
+    (42) expression -> . IDENTIFIANT
+    (43) expression -> . IDENTIFIANT LPAREN argument_list_opt RPAREN
+    (44) expression -> . expression PLUS expression
+    (45) expression -> . expression MOINS expression
+    (46) expression -> . expression FOIS expression
+    (47) expression -> . expression DIVISE expression
+    (48) expression -> . expression INFERIEUR expression
+    (49) expression -> . expression SUPERIEUR expression
+    (50) expression -> . expression EGAL_EGAL expression
+    (51) expression -> . MOINS expression
+    (52) expression -> . LPAREN expression RPAREN
 
-    POINT_VIRGULE   reduce using rule 15 (expression -> expression INFERIEUR expression .)
-    INFERIEUR       reduce using rule 15 (expression -> expression INFERIEUR expression .)
-    SUPERIEUR       reduce using rule 15 (expression -> expression INFERIEUR expression .)
-    EGAL_EGAL       reduce using rule 15 (expression -> expression INFERIEUR expression .)
-    RPAREN          reduce using rule 15 (expression -> expression INFERIEUR expression .)
-    PLUS            shift and go to state 27
-    MOINS           shift and go to state 28
-    FOIS            shift and go to state 29
-    DIVISE          shift and go to state 30
+    NOMBRE          shift and go to state 17
+    CHAINE          shift and go to state 18
+    IDENTIFIANT     shift and go to state 24
+    MOINS           shift and go to state 19
+    LPAREN          shift and go to state 7
 
-  ! PLUS            [ reduce using rule 15 (expression -> expression INFERIEUR expression .) ]
-  ! MOINS           [ reduce using rule 15 (expression -> expression INFERIEUR expression .) ]
-  ! FOIS            [ reduce using rule 15 (expression -> expression INFERIEUR expression .) ]
-  ! DIVISE          [ reduce using rule 15 (expression -> expression INFERIEUR expression .) ]
-  ! INFERIEUR       [ shift and go to state 31 ]
-  ! SUPERIEUR       [ shift and go to state 32 ]
-  ! EGAL_EGAL       [ shift and go to state 33 ]
-
+    expression_list                shift and go to state 76
+    expression                     shift and go to state 52
 
 state 46
 
-    (16) expression -> expression SUPERIEUR expression .
-    (11) expression -> expression . PLUS expression
-    (12) expression -> expression . MOINS expression
-    (13) expression -> expression . FOIS expression
-    (14) expression -> expression . DIVISE expression
-    (15) expression -> expression . INFERIEUR expression
-    (16) expression -> expression . SUPERIEUR expression
-    (17) expression -> expression . EGAL_EGAL expression
+    (31) id_list -> id_list VIRGULE . IDENTIFIANT
 
-    POINT_VIRGULE   reduce using rule 16 (expression -> expression SUPERIEUR expression .)
-    INFERIEUR       reduce using rule 16 (expression -> expression SUPERIEUR expression .)
-    SUPERIEUR       reduce using rule 16 (expression -> expression SUPERIEUR expression .)
-    EGAL_EGAL       reduce using rule 16 (expression -> expression SUPERIEUR expression .)
-    RPAREN          reduce using rule 16 (expression -> expression SUPERIEUR expression .)
-    PLUS            shift and go to state 27
-    MOINS           shift and go to state 28
-    FOIS            shift and go to state 29
-    DIVISE          shift and go to state 30
-
-  ! PLUS            [ reduce using rule 16 (expression -> expression SUPERIEUR expression .) ]
-  ! MOINS           [ reduce using rule 16 (expression -> expression SUPERIEUR expression .) ]
-  ! FOIS            [ reduce using rule 16 (expression -> expression SUPERIEUR expression .) ]
-  ! DIVISE          [ reduce using rule 16 (expression -> expression SUPERIEUR expression .) ]
-  ! INFERIEUR       [ shift and go to state 31 ]
-  ! SUPERIEUR       [ shift and go to state 32 ]
-  ! EGAL_EGAL       [ shift and go to state 33 ]
+    IDENTIFIANT     shift and go to state 77
 
 
 state 47
 
-    (17) expression -> expression EGAL_EGAL expression .
-    (11) expression -> expression . PLUS expression
-    (12) expression -> expression . MOINS expression
-    (13) expression -> expression . FOIS expression
-    (14) expression -> expression . DIVISE expression
-    (15) expression -> expression . INFERIEUR expression
-    (16) expression -> expression . SUPERIEUR expression
-    (17) expression -> expression . EGAL_EGAL expression
+    (13) simple_statement -> VAR declaration_list .
+    (27) declaration_list -> declaration_list . VIRGULE declaration
 
-    POINT_VIRGULE   reduce using rule 17 (expression -> expression EGAL_EGAL expression .)
-    INFERIEUR       reduce using rule 17 (expression -> expression EGAL_EGAL expression .)
-    SUPERIEUR       reduce using rule 17 (expression -> expression EGAL_EGAL expression .)
-    EGAL_EGAL       reduce using rule 17 (expression -> expression EGAL_EGAL expression .)
-    RPAREN          reduce using rule 17 (expression -> expression EGAL_EGAL expression .)
-    PLUS            shift and go to state 27
-    MOINS           shift and go to state 28
-    FOIS            shift and go to state 29
-    DIVISE          shift and go to state 30
-
-  ! PLUS            [ reduce using rule 17 (expression -> expression EGAL_EGAL expression .) ]
-  ! MOINS           [ reduce using rule 17 (expression -> expression EGAL_EGAL expression .) ]
-  ! FOIS            [ reduce using rule 17 (expression -> expression EGAL_EGAL expression .) ]
-  ! DIVISE          [ reduce using rule 17 (expression -> expression EGAL_EGAL expression .) ]
-  ! INFERIEUR       [ shift and go to state 31 ]
-  ! SUPERIEUR       [ shift and go to state 32 ]
-  ! EGAL_EGAL       [ shift and go to state 33 ]
+    POINT_VIRGULE   reduce using rule 13 (simple_statement -> VAR declaration_list .)
+    RPAREN          reduce using rule 13 (simple_statement -> VAR declaration_list .)
+    VIRGULE         shift and go to state 78
 
 
 state 48
 
-    (21) expression -> LPAREN expression RPAREN .
+    (26) declaration_list -> declaration .
 
-    POINT_VIRGULE   reduce using rule 21 (expression -> LPAREN expression RPAREN .)
-    PLUS            reduce using rule 21 (expression -> LPAREN expression RPAREN .)
-    MOINS           reduce using rule 21 (expression -> LPAREN expression RPAREN .)
-    FOIS            reduce using rule 21 (expression -> LPAREN expression RPAREN .)
-    DIVISE          reduce using rule 21 (expression -> LPAREN expression RPAREN .)
-    INFERIEUR       reduce using rule 21 (expression -> LPAREN expression RPAREN .)
-    SUPERIEUR       reduce using rule 21 (expression -> LPAREN expression RPAREN .)
-    EGAL_EGAL       reduce using rule 21 (expression -> LPAREN expression RPAREN .)
-    RPAREN          reduce using rule 21 (expression -> LPAREN expression RPAREN .)
+    VIRGULE         reduce using rule 26 (declaration_list -> declaration .)
+    POINT_VIRGULE   reduce using rule 26 (declaration_list -> declaration .)
+    RPAREN          reduce using rule 26 (declaration_list -> declaration .)
 
 
 state 49
 
-    (5) instruction -> PRINT LPAREN expression RPAREN POINT_VIRGULE .
+    (28) declaration -> IDENTIFIANT .
+    (29) declaration -> IDENTIFIANT . EGAL expression
 
-    IDENTIFIANT     reduce using rule 5 (instruction -> PRINT LPAREN expression RPAREN POINT_VIRGULE .)
-    PRINT           reduce using rule 5 (instruction -> PRINT LPAREN expression RPAREN POINT_VIRGULE .)
-    IF              reduce using rule 5 (instruction -> PRINT LPAREN expression RPAREN POINT_VIRGULE .)
-    WHILE           reduce using rule 5 (instruction -> PRINT LPAREN expression RPAREN POINT_VIRGULE .)
-    FOR             reduce using rule 5 (instruction -> PRINT LPAREN expression RPAREN POINT_VIRGULE .)
-    POINT_VIRGULE   reduce using rule 5 (instruction -> PRINT LPAREN expression RPAREN POINT_VIRGULE .)
-    $end            reduce using rule 5 (instruction -> PRINT LPAREN expression RPAREN POINT_VIRGULE .)
-    RBRACE          reduce using rule 5 (instruction -> PRINT LPAREN expression RPAREN POINT_VIRGULE .)
+    VIRGULE         reduce using rule 28 (declaration -> IDENTIFIANT .)
+    POINT_VIRGULE   reduce using rule 28 (declaration -> IDENTIFIANT .)
+    RPAREN          reduce using rule 28 (declaration -> IDENTIFIANT .)
+    EGAL            shift and go to state 79
 
 
 state 50
 
-    (6) instruction -> IF LPAREN expression RPAREN LBRACE . bloc RBRACE
-    (7) instruction -> IF LPAREN expression RPAREN LBRACE . bloc RBRACE ELSE LBRACE bloc RBRACE
-    (2) bloc -> . instruction
-    (3) bloc -> . instruction bloc
-    (4) instruction -> . IDENTIFIANT EGAL expression POINT_VIRGULE
-    (5) instruction -> . PRINT LPAREN expression RPAREN POINT_VIRGULE
-    (6) instruction -> . IF LPAREN expression RPAREN LBRACE bloc RBRACE
-    (7) instruction -> . IF LPAREN expression RPAREN LBRACE bloc RBRACE ELSE LBRACE bloc RBRACE
-    (8) instruction -> . WHILE LPAREN expression RPAREN LBRACE bloc RBRACE
-    (19) instruction -> . FOR LPAREN affectation_simple POINT_VIRGULE expression POINT_VIRGULE affectation_simple RPAREN LBRACE bloc RBRACE
-    (22) instruction -> . POINT_VIRGULE
+    (51) expression -> MOINS expression .
+    (44) expression -> expression . PLUS expression
+    (45) expression -> expression . MOINS expression
+    (46) expression -> expression . FOIS expression
+    (47) expression -> expression . DIVISE expression
+    (48) expression -> expression . INFERIEUR expression
+    (49) expression -> expression . SUPERIEUR expression
+    (50) expression -> expression . EGAL_EGAL expression
 
-    IDENTIFIANT     shift and go to state 4
-    PRINT           shift and go to state 6
-    IF              shift and go to state 7
-    WHILE           shift and go to state 8
-    FOR             shift and go to state 9
-    POINT_VIRGULE   shift and go to state 5
+    POINT_VIRGULE   reduce using rule 51 (expression -> MOINS expression .)
+    PLUS            reduce using rule 51 (expression -> MOINS expression .)
+    MOINS           reduce using rule 51 (expression -> MOINS expression .)
+    FOIS            reduce using rule 51 (expression -> MOINS expression .)
+    DIVISE          reduce using rule 51 (expression -> MOINS expression .)
+    INFERIEUR       reduce using rule 51 (expression -> MOINS expression .)
+    SUPERIEUR       reduce using rule 51 (expression -> MOINS expression .)
+    EGAL_EGAL       reduce using rule 51 (expression -> MOINS expression .)
+    RPAREN          reduce using rule 51 (expression -> MOINS expression .)
+    VIRGULE         reduce using rule 51 (expression -> MOINS expression .)
 
-    bloc                           shift and go to state 54
-    instruction                    shift and go to state 3
+  ! PLUS            [ shift and go to state 26 ]
+  ! MOINS           [ shift and go to state 27 ]
+  ! FOIS            [ shift and go to state 28 ]
+  ! DIVISE          [ shift and go to state 29 ]
+  ! INFERIEUR       [ shift and go to state 30 ]
+  ! SUPERIEUR       [ shift and go to state 31 ]
+  ! EGAL_EGAL       [ shift and go to state 32 ]
+
 
 state 51
 
-    (8) instruction -> WHILE LPAREN expression RPAREN LBRACE . bloc RBRACE
-    (2) bloc -> . instruction
-    (3) bloc -> . instruction bloc
-    (4) instruction -> . IDENTIFIANT EGAL expression POINT_VIRGULE
-    (5) instruction -> . PRINT LPAREN expression RPAREN POINT_VIRGULE
-    (6) instruction -> . IF LPAREN expression RPAREN LBRACE bloc RBRACE
-    (7) instruction -> . IF LPAREN expression RPAREN LBRACE bloc RBRACE ELSE LBRACE bloc RBRACE
-    (8) instruction -> . WHILE LPAREN expression RPAREN LBRACE bloc RBRACE
-    (19) instruction -> . FOR LPAREN affectation_simple POINT_VIRGULE expression POINT_VIRGULE affectation_simple RPAREN LBRACE bloc RBRACE
-    (22) instruction -> . POINT_VIRGULE
+    (14) instruction -> PRINT LPAREN expression_list . RPAREN POINT_VIRGULE
+    (39) expression_list -> expression_list . VIRGULE expression
 
-    IDENTIFIANT     shift and go to state 4
-    PRINT           shift and go to state 6
-    IF              shift and go to state 7
-    WHILE           shift and go to state 8
-    FOR             shift and go to state 9
-    POINT_VIRGULE   shift and go to state 5
+    RPAREN          shift and go to state 80
+    VIRGULE         shift and go to state 81
 
-    bloc                           shift and go to state 55
-    instruction                    shift and go to state 3
 
 state 52
 
-    (19) instruction -> FOR LPAREN affectation_simple POINT_VIRGULE expression . POINT_VIRGULE affectation_simple RPAREN LBRACE bloc RBRACE
-    (11) expression -> expression . PLUS expression
-    (12) expression -> expression . MOINS expression
-    (13) expression -> expression . FOIS expression
-    (14) expression -> expression . DIVISE expression
-    (15) expression -> expression . INFERIEUR expression
-    (16) expression -> expression . SUPERIEUR expression
-    (17) expression -> expression . EGAL_EGAL expression
+    (38) expression_list -> expression .
+    (44) expression -> expression . PLUS expression
+    (45) expression -> expression . MOINS expression
+    (46) expression -> expression . FOIS expression
+    (47) expression -> expression . DIVISE expression
+    (48) expression -> expression . INFERIEUR expression
+    (49) expression -> expression . SUPERIEUR expression
+    (50) expression -> expression . EGAL_EGAL expression
 
-    POINT_VIRGULE   shift and go to state 56
-    PLUS            shift and go to state 27
-    MOINS           shift and go to state 28
-    FOIS            shift and go to state 29
-    DIVISE          shift and go to state 30
-    INFERIEUR       shift and go to state 31
-    SUPERIEUR       shift and go to state 32
-    EGAL_EGAL       shift and go to state 33
+    RPAREN          reduce using rule 38 (expression_list -> expression .)
+    VIRGULE         reduce using rule 38 (expression_list -> expression .)
+    POINT_VIRGULE   reduce using rule 38 (expression_list -> expression .)
+    PLUS            shift and go to state 26
+    MOINS           shift and go to state 27
+    FOIS            shift and go to state 28
+    DIVISE          shift and go to state 29
+    INFERIEUR       shift and go to state 30
+    SUPERIEUR       shift and go to state 31
+    EGAL_EGAL       shift and go to state 32
 
 
 state 53
 
-    (18) affectation_simple -> IDENTIFIANT EGAL expression .
-    (11) expression -> expression . PLUS expression
-    (12) expression -> expression . MOINS expression
-    (13) expression -> expression . FOIS expression
-    (14) expression -> expression . DIVISE expression
-    (15) expression -> expression . INFERIEUR expression
-    (16) expression -> expression . SUPERIEUR expression
-    (17) expression -> expression . EGAL_EGAL expression
+    (52) expression -> LPAREN expression RPAREN .
 
-    POINT_VIRGULE   reduce using rule 18 (affectation_simple -> IDENTIFIANT EGAL expression .)
-    RPAREN          reduce using rule 18 (affectation_simple -> IDENTIFIANT EGAL expression .)
-    PLUS            shift and go to state 27
-    MOINS           shift and go to state 28
-    FOIS            shift and go to state 29
-    DIVISE          shift and go to state 30
-    INFERIEUR       shift and go to state 31
-    SUPERIEUR       shift and go to state 32
-    EGAL_EGAL       shift and go to state 33
+    POINT_VIRGULE   reduce using rule 52 (expression -> LPAREN expression RPAREN .)
+    PLUS            reduce using rule 52 (expression -> LPAREN expression RPAREN .)
+    MOINS           reduce using rule 52 (expression -> LPAREN expression RPAREN .)
+    FOIS            reduce using rule 52 (expression -> LPAREN expression RPAREN .)
+    DIVISE          reduce using rule 52 (expression -> LPAREN expression RPAREN .)
+    INFERIEUR       reduce using rule 52 (expression -> LPAREN expression RPAREN .)
+    SUPERIEUR       reduce using rule 52 (expression -> LPAREN expression RPAREN .)
+    EGAL_EGAL       reduce using rule 52 (expression -> LPAREN expression RPAREN .)
+    RPAREN          reduce using rule 52 (expression -> LPAREN expression RPAREN .)
+    VIRGULE         reduce using rule 52 (expression -> LPAREN expression RPAREN .)
 
 
 state 54
 
-    (6) instruction -> IF LPAREN expression RPAREN LBRACE bloc . RBRACE
-    (7) instruction -> IF LPAREN expression RPAREN LBRACE bloc . RBRACE ELSE LBRACE bloc RBRACE
+    (44) expression -> expression PLUS expression .
+    (44) expression -> expression . PLUS expression
+    (45) expression -> expression . MOINS expression
+    (46) expression -> expression . FOIS expression
+    (47) expression -> expression . DIVISE expression
+    (48) expression -> expression . INFERIEUR expression
+    (49) expression -> expression . SUPERIEUR expression
+    (50) expression -> expression . EGAL_EGAL expression
 
-    RBRACE          shift and go to state 57
+    POINT_VIRGULE   reduce using rule 44 (expression -> expression PLUS expression .)
+    PLUS            reduce using rule 44 (expression -> expression PLUS expression .)
+    MOINS           reduce using rule 44 (expression -> expression PLUS expression .)
+    INFERIEUR       reduce using rule 44 (expression -> expression PLUS expression .)
+    SUPERIEUR       reduce using rule 44 (expression -> expression PLUS expression .)
+    EGAL_EGAL       reduce using rule 44 (expression -> expression PLUS expression .)
+    RPAREN          reduce using rule 44 (expression -> expression PLUS expression .)
+    VIRGULE         reduce using rule 44 (expression -> expression PLUS expression .)
+    FOIS            shift and go to state 28
+    DIVISE          shift and go to state 29
+
+  ! FOIS            [ reduce using rule 44 (expression -> expression PLUS expression .) ]
+  ! DIVISE          [ reduce using rule 44 (expression -> expression PLUS expression .) ]
+  ! PLUS            [ shift and go to state 26 ]
+  ! MOINS           [ shift and go to state 27 ]
+  ! INFERIEUR       [ shift and go to state 30 ]
+  ! SUPERIEUR       [ shift and go to state 31 ]
+  ! EGAL_EGAL       [ shift and go to state 32 ]
 
 
 state 55
 
-    (8) instruction -> WHILE LPAREN expression RPAREN LBRACE bloc . RBRACE
+    (45) expression -> expression MOINS expression .
+    (44) expression -> expression . PLUS expression
+    (45) expression -> expression . MOINS expression
+    (46) expression -> expression . FOIS expression
+    (47) expression -> expression . DIVISE expression
+    (48) expression -> expression . INFERIEUR expression
+    (49) expression -> expression . SUPERIEUR expression
+    (50) expression -> expression . EGAL_EGAL expression
 
-    RBRACE          shift and go to state 58
+    POINT_VIRGULE   reduce using rule 45 (expression -> expression MOINS expression .)
+    PLUS            reduce using rule 45 (expression -> expression MOINS expression .)
+    MOINS           reduce using rule 45 (expression -> expression MOINS expression .)
+    INFERIEUR       reduce using rule 45 (expression -> expression MOINS expression .)
+    SUPERIEUR       reduce using rule 45 (expression -> expression MOINS expression .)
+    EGAL_EGAL       reduce using rule 45 (expression -> expression MOINS expression .)
+    RPAREN          reduce using rule 45 (expression -> expression MOINS expression .)
+    VIRGULE         reduce using rule 45 (expression -> expression MOINS expression .)
+    FOIS            shift and go to state 28
+    DIVISE          shift and go to state 29
+
+  ! FOIS            [ reduce using rule 45 (expression -> expression MOINS expression .) ]
+  ! DIVISE          [ reduce using rule 45 (expression -> expression MOINS expression .) ]
+  ! PLUS            [ shift and go to state 26 ]
+  ! MOINS           [ shift and go to state 27 ]
+  ! INFERIEUR       [ shift and go to state 30 ]
+  ! SUPERIEUR       [ shift and go to state 31 ]
+  ! EGAL_EGAL       [ shift and go to state 32 ]
 
 
 state 56
 
-    (19) instruction -> FOR LPAREN affectation_simple POINT_VIRGULE expression POINT_VIRGULE . affectation_simple RPAREN LBRACE bloc RBRACE
-    (18) affectation_simple -> . IDENTIFIANT EGAL expression
+    (46) expression -> expression FOIS expression .
+    (44) expression -> expression . PLUS expression
+    (45) expression -> expression . MOINS expression
+    (46) expression -> expression . FOIS expression
+    (47) expression -> expression . DIVISE expression
+    (48) expression -> expression . INFERIEUR expression
+    (49) expression -> expression . SUPERIEUR expression
+    (50) expression -> expression . EGAL_EGAL expression
 
-    IDENTIFIANT     shift and go to state 25
+    POINT_VIRGULE   reduce using rule 46 (expression -> expression FOIS expression .)
+    PLUS            reduce using rule 46 (expression -> expression FOIS expression .)
+    MOINS           reduce using rule 46 (expression -> expression FOIS expression .)
+    FOIS            reduce using rule 46 (expression -> expression FOIS expression .)
+    DIVISE          reduce using rule 46 (expression -> expression FOIS expression .)
+    INFERIEUR       reduce using rule 46 (expression -> expression FOIS expression .)
+    SUPERIEUR       reduce using rule 46 (expression -> expression FOIS expression .)
+    EGAL_EGAL       reduce using rule 46 (expression -> expression FOIS expression .)
+    RPAREN          reduce using rule 46 (expression -> expression FOIS expression .)
+    VIRGULE         reduce using rule 46 (expression -> expression FOIS expression .)
 
-    affectation_simple             shift and go to state 59
+  ! PLUS            [ shift and go to state 26 ]
+  ! MOINS           [ shift and go to state 27 ]
+  ! FOIS            [ shift and go to state 28 ]
+  ! DIVISE          [ shift and go to state 29 ]
+  ! INFERIEUR       [ shift and go to state 30 ]
+  ! SUPERIEUR       [ shift and go to state 31 ]
+  ! EGAL_EGAL       [ shift and go to state 32 ]
+
 
 state 57
 
-    (6) instruction -> IF LPAREN expression RPAREN LBRACE bloc RBRACE .
-    (7) instruction -> IF LPAREN expression RPAREN LBRACE bloc RBRACE . ELSE LBRACE bloc RBRACE
+    (47) expression -> expression DIVISE expression .
+    (44) expression -> expression . PLUS expression
+    (45) expression -> expression . MOINS expression
+    (46) expression -> expression . FOIS expression
+    (47) expression -> expression . DIVISE expression
+    (48) expression -> expression . INFERIEUR expression
+    (49) expression -> expression . SUPERIEUR expression
+    (50) expression -> expression . EGAL_EGAL expression
 
-    IDENTIFIANT     reduce using rule 6 (instruction -> IF LPAREN expression RPAREN LBRACE bloc RBRACE .)
-    PRINT           reduce using rule 6 (instruction -> IF LPAREN expression RPAREN LBRACE bloc RBRACE .)
-    IF              reduce using rule 6 (instruction -> IF LPAREN expression RPAREN LBRACE bloc RBRACE .)
-    WHILE           reduce using rule 6 (instruction -> IF LPAREN expression RPAREN LBRACE bloc RBRACE .)
-    FOR             reduce using rule 6 (instruction -> IF LPAREN expression RPAREN LBRACE bloc RBRACE .)
-    POINT_VIRGULE   reduce using rule 6 (instruction -> IF LPAREN expression RPAREN LBRACE bloc RBRACE .)
-    $end            reduce using rule 6 (instruction -> IF LPAREN expression RPAREN LBRACE bloc RBRACE .)
-    RBRACE          reduce using rule 6 (instruction -> IF LPAREN expression RPAREN LBRACE bloc RBRACE .)
-    ELSE            shift and go to state 60
+    POINT_VIRGULE   reduce using rule 47 (expression -> expression DIVISE expression .)
+    PLUS            reduce using rule 47 (expression -> expression DIVISE expression .)
+    MOINS           reduce using rule 47 (expression -> expression DIVISE expression .)
+    FOIS            reduce using rule 47 (expression -> expression DIVISE expression .)
+    DIVISE          reduce using rule 47 (expression -> expression DIVISE expression .)
+    INFERIEUR       reduce using rule 47 (expression -> expression DIVISE expression .)
+    SUPERIEUR       reduce using rule 47 (expression -> expression DIVISE expression .)
+    EGAL_EGAL       reduce using rule 47 (expression -> expression DIVISE expression .)
+    RPAREN          reduce using rule 47 (expression -> expression DIVISE expression .)
+    VIRGULE         reduce using rule 47 (expression -> expression DIVISE expression .)
+
+  ! PLUS            [ shift and go to state 26 ]
+  ! MOINS           [ shift and go to state 27 ]
+  ! FOIS            [ shift and go to state 28 ]
+  ! DIVISE          [ shift and go to state 29 ]
+  ! INFERIEUR       [ shift and go to state 30 ]
+  ! SUPERIEUR       [ shift and go to state 31 ]
+  ! EGAL_EGAL       [ shift and go to state 32 ]
 
 
 state 58
 
-    (8) instruction -> WHILE LPAREN expression RPAREN LBRACE bloc RBRACE .
+    (48) expression -> expression INFERIEUR expression .
+    (44) expression -> expression . PLUS expression
+    (45) expression -> expression . MOINS expression
+    (46) expression -> expression . FOIS expression
+    (47) expression -> expression . DIVISE expression
+    (48) expression -> expression . INFERIEUR expression
+    (49) expression -> expression . SUPERIEUR expression
+    (50) expression -> expression . EGAL_EGAL expression
 
-    IDENTIFIANT     reduce using rule 8 (instruction -> WHILE LPAREN expression RPAREN LBRACE bloc RBRACE .)
-    PRINT           reduce using rule 8 (instruction -> WHILE LPAREN expression RPAREN LBRACE bloc RBRACE .)
-    IF              reduce using rule 8 (instruction -> WHILE LPAREN expression RPAREN LBRACE bloc RBRACE .)
-    WHILE           reduce using rule 8 (instruction -> WHILE LPAREN expression RPAREN LBRACE bloc RBRACE .)
-    FOR             reduce using rule 8 (instruction -> WHILE LPAREN expression RPAREN LBRACE bloc RBRACE .)
-    POINT_VIRGULE   reduce using rule 8 (instruction -> WHILE LPAREN expression RPAREN LBRACE bloc RBRACE .)
-    $end            reduce using rule 8 (instruction -> WHILE LPAREN expression RPAREN LBRACE bloc RBRACE .)
-    RBRACE          reduce using rule 8 (instruction -> WHILE LPAREN expression RPAREN LBRACE bloc RBRACE .)
+    POINT_VIRGULE   reduce using rule 48 (expression -> expression INFERIEUR expression .)
+    INFERIEUR       reduce using rule 48 (expression -> expression INFERIEUR expression .)
+    SUPERIEUR       reduce using rule 48 (expression -> expression INFERIEUR expression .)
+    EGAL_EGAL       reduce using rule 48 (expression -> expression INFERIEUR expression .)
+    RPAREN          reduce using rule 48 (expression -> expression INFERIEUR expression .)
+    VIRGULE         reduce using rule 48 (expression -> expression INFERIEUR expression .)
+    PLUS            shift and go to state 26
+    MOINS           shift and go to state 27
+    FOIS            shift and go to state 28
+    DIVISE          shift and go to state 29
+
+  ! PLUS            [ reduce using rule 48 (expression -> expression INFERIEUR expression .) ]
+  ! MOINS           [ reduce using rule 48 (expression -> expression INFERIEUR expression .) ]
+  ! FOIS            [ reduce using rule 48 (expression -> expression INFERIEUR expression .) ]
+  ! DIVISE          [ reduce using rule 48 (expression -> expression INFERIEUR expression .) ]
+  ! INFERIEUR       [ shift and go to state 30 ]
+  ! SUPERIEUR       [ shift and go to state 31 ]
+  ! EGAL_EGAL       [ shift and go to state 32 ]
 
 
 state 59
 
-    (19) instruction -> FOR LPAREN affectation_simple POINT_VIRGULE expression POINT_VIRGULE affectation_simple . RPAREN LBRACE bloc RBRACE
+    (49) expression -> expression SUPERIEUR expression .
+    (44) expression -> expression . PLUS expression
+    (45) expression -> expression . MOINS expression
+    (46) expression -> expression . FOIS expression
+    (47) expression -> expression . DIVISE expression
+    (48) expression -> expression . INFERIEUR expression
+    (49) expression -> expression . SUPERIEUR expression
+    (50) expression -> expression . EGAL_EGAL expression
 
-    RPAREN          shift and go to state 61
+    POINT_VIRGULE   reduce using rule 49 (expression -> expression SUPERIEUR expression .)
+    INFERIEUR       reduce using rule 49 (expression -> expression SUPERIEUR expression .)
+    SUPERIEUR       reduce using rule 49 (expression -> expression SUPERIEUR expression .)
+    EGAL_EGAL       reduce using rule 49 (expression -> expression SUPERIEUR expression .)
+    RPAREN          reduce using rule 49 (expression -> expression SUPERIEUR expression .)
+    VIRGULE         reduce using rule 49 (expression -> expression SUPERIEUR expression .)
+    PLUS            shift and go to state 26
+    MOINS           shift and go to state 27
+    FOIS            shift and go to state 28
+    DIVISE          shift and go to state 29
+
+  ! PLUS            [ reduce using rule 49 (expression -> expression SUPERIEUR expression .) ]
+  ! MOINS           [ reduce using rule 49 (expression -> expression SUPERIEUR expression .) ]
+  ! FOIS            [ reduce using rule 49 (expression -> expression SUPERIEUR expression .) ]
+  ! DIVISE          [ reduce using rule 49 (expression -> expression SUPERIEUR expression .) ]
+  ! INFERIEUR       [ shift and go to state 30 ]
+  ! SUPERIEUR       [ shift and go to state 31 ]
+  ! EGAL_EGAL       [ shift and go to state 32 ]
 
 
 state 60
 
-    (7) instruction -> IF LPAREN expression RPAREN LBRACE bloc RBRACE ELSE . LBRACE bloc RBRACE
+    (50) expression -> expression EGAL_EGAL expression .
+    (44) expression -> expression . PLUS expression
+    (45) expression -> expression . MOINS expression
+    (46) expression -> expression . FOIS expression
+    (47) expression -> expression . DIVISE expression
+    (48) expression -> expression . INFERIEUR expression
+    (49) expression -> expression . SUPERIEUR expression
+    (50) expression -> expression . EGAL_EGAL expression
 
-    LBRACE          shift and go to state 62
+    POINT_VIRGULE   reduce using rule 50 (expression -> expression EGAL_EGAL expression .)
+    INFERIEUR       reduce using rule 50 (expression -> expression EGAL_EGAL expression .)
+    SUPERIEUR       reduce using rule 50 (expression -> expression EGAL_EGAL expression .)
+    EGAL_EGAL       reduce using rule 50 (expression -> expression EGAL_EGAL expression .)
+    RPAREN          reduce using rule 50 (expression -> expression EGAL_EGAL expression .)
+    VIRGULE         reduce using rule 50 (expression -> expression EGAL_EGAL expression .)
+    PLUS            shift and go to state 26
+    MOINS           shift and go to state 27
+    FOIS            shift and go to state 28
+    DIVISE          shift and go to state 29
+
+  ! PLUS            [ reduce using rule 50 (expression -> expression EGAL_EGAL expression .) ]
+  ! MOINS           [ reduce using rule 50 (expression -> expression EGAL_EGAL expression .) ]
+  ! FOIS            [ reduce using rule 50 (expression -> expression EGAL_EGAL expression .) ]
+  ! DIVISE          [ reduce using rule 50 (expression -> expression EGAL_EGAL expression .) ]
+  ! INFERIEUR       [ shift and go to state 30 ]
+  ! SUPERIEUR       [ shift and go to state 31 ]
+  ! EGAL_EGAL       [ shift and go to state 32 ]
 
 
 state 61
 
-    (19) instruction -> FOR LPAREN affectation_simple POINT_VIRGULE expression POINT_VIRGULE affectation_simple RPAREN . LBRACE bloc RBRACE
+    (16) instruction -> IF LPAREN expression . RPAREN block
+    (17) instruction -> IF LPAREN expression . RPAREN block ELSE block
+    (44) expression -> expression . PLUS expression
+    (45) expression -> expression . MOINS expression
+    (46) expression -> expression . FOIS expression
+    (47) expression -> expression . DIVISE expression
+    (48) expression -> expression . INFERIEUR expression
+    (49) expression -> expression . SUPERIEUR expression
+    (50) expression -> expression . EGAL_EGAL expression
 
-    LBRACE          shift and go to state 63
+    RPAREN          shift and go to state 82
+    PLUS            shift and go to state 26
+    MOINS           shift and go to state 27
+    FOIS            shift and go to state 28
+    DIVISE          shift and go to state 29
+    INFERIEUR       shift and go to state 30
+    SUPERIEUR       shift and go to state 31
+    EGAL_EGAL       shift and go to state 32
 
 
 state 62
 
-    (7) instruction -> IF LPAREN expression RPAREN LBRACE bloc RBRACE ELSE LBRACE . bloc RBRACE
-    (2) bloc -> . instruction
-    (3) bloc -> . instruction bloc
-    (4) instruction -> . IDENTIFIANT EGAL expression POINT_VIRGULE
-    (5) instruction -> . PRINT LPAREN expression RPAREN POINT_VIRGULE
-    (6) instruction -> . IF LPAREN expression RPAREN LBRACE bloc RBRACE
-    (7) instruction -> . IF LPAREN expression RPAREN LBRACE bloc RBRACE ELSE LBRACE bloc RBRACE
-    (8) instruction -> . WHILE LPAREN expression RPAREN LBRACE bloc RBRACE
-    (19) instruction -> . FOR LPAREN affectation_simple POINT_VIRGULE expression POINT_VIRGULE affectation_simple RPAREN LBRACE bloc RBRACE
-    (22) instruction -> . POINT_VIRGULE
+    (18) instruction -> WHILE LPAREN expression . RPAREN block
+    (44) expression -> expression . PLUS expression
+    (45) expression -> expression . MOINS expression
+    (46) expression -> expression . FOIS expression
+    (47) expression -> expression . DIVISE expression
+    (48) expression -> expression . INFERIEUR expression
+    (49) expression -> expression . SUPERIEUR expression
+    (50) expression -> expression . EGAL_EGAL expression
 
-    IDENTIFIANT     shift and go to state 4
-    PRINT           shift and go to state 6
-    IF              shift and go to state 7
-    WHILE           shift and go to state 8
-    FOR             shift and go to state 9
-    POINT_VIRGULE   shift and go to state 5
+    RPAREN          shift and go to state 83
+    PLUS            shift and go to state 26
+    MOINS           shift and go to state 27
+    FOIS            shift and go to state 28
+    DIVISE          shift and go to state 29
+    INFERIEUR       shift and go to state 30
+    SUPERIEUR       shift and go to state 31
+    EGAL_EGAL       shift and go to state 32
 
-    bloc                           shift and go to state 64
-    instruction                    shift and go to state 3
 
 state 63
 
-    (19) instruction -> FOR LPAREN affectation_simple POINT_VIRGULE expression POINT_VIRGULE affectation_simple RPAREN LBRACE . bloc RBRACE
-    (2) bloc -> . instruction
-    (3) bloc -> . instruction bloc
-    (4) instruction -> . IDENTIFIANT EGAL expression POINT_VIRGULE
-    (5) instruction -> . PRINT LPAREN expression RPAREN POINT_VIRGULE
-    (6) instruction -> . IF LPAREN expression RPAREN LBRACE bloc RBRACE
-    (7) instruction -> . IF LPAREN expression RPAREN LBRACE bloc RBRACE ELSE LBRACE bloc RBRACE
-    (8) instruction -> . WHILE LPAREN expression RPAREN LBRACE bloc RBRACE
-    (19) instruction -> . FOR LPAREN affectation_simple POINT_VIRGULE expression POINT_VIRGULE affectation_simple RPAREN LBRACE bloc RBRACE
-    (22) instruction -> . POINT_VIRGULE
+    (19) instruction -> FOR LPAREN for_part . POINT_VIRGULE expression POINT_VIRGULE for_part RPAREN block
 
-    IDENTIFIANT     shift and go to state 4
-    PRINT           shift and go to state 6
-    IF              shift and go to state 7
-    WHILE           shift and go to state 8
-    FOR             shift and go to state 9
-    POINT_VIRGULE   shift and go to state 5
+    POINT_VIRGULE   shift and go to state 84
 
-    bloc                           shift and go to state 65
-    instruction                    shift and go to state 3
 
 state 64
 
-    (7) instruction -> IF LPAREN expression RPAREN LBRACE bloc RBRACE ELSE LBRACE bloc . RBRACE
+    (24) for_part -> simple_statement .
 
-    RBRACE          shift and go to state 66
+    POINT_VIRGULE   reduce using rule 24 (for_part -> simple_statement .)
+    RPAREN          reduce using rule 24 (for_part -> simple_statement .)
 
 
 state 65
 
-    (19) instruction -> FOR LPAREN affectation_simple POINT_VIRGULE expression POINT_VIRGULE affectation_simple RPAREN LBRACE bloc . RBRACE
+    (25) for_part -> empty .
 
-    RBRACE          shift and go to state 67
+    POINT_VIRGULE   reduce using rule 25 (for_part -> empty .)
+    RPAREN          reduce using rule 25 (for_part -> empty .)
 
 
 state 66
 
-    (7) instruction -> IF LPAREN expression RPAREN LBRACE bloc RBRACE ELSE LBRACE bloc RBRACE .
+    (8) simple_statement -> IDENTIFIANT . PLUS_EGAL expression
+    (9) simple_statement -> IDENTIFIANT . MOINS_EGAL expression
+    (10) simple_statement -> IDENTIFIANT . FOIS_EGAL expression
+    (11) simple_statement -> IDENTIFIANT . DIVISE_EGAL expression
+    (12) simple_statement -> IDENTIFIANT . PLUS_PLUS
+    (30) id_list -> IDENTIFIANT .
 
-    IDENTIFIANT     reduce using rule 7 (instruction -> IF LPAREN expression RPAREN LBRACE bloc RBRACE ELSE LBRACE bloc RBRACE .)
-    PRINT           reduce using rule 7 (instruction -> IF LPAREN expression RPAREN LBRACE bloc RBRACE ELSE LBRACE bloc RBRACE .)
-    IF              reduce using rule 7 (instruction -> IF LPAREN expression RPAREN LBRACE bloc RBRACE ELSE LBRACE bloc RBRACE .)
-    WHILE           reduce using rule 7 (instruction -> IF LPAREN expression RPAREN LBRACE bloc RBRACE ELSE LBRACE bloc RBRACE .)
-    FOR             reduce using rule 7 (instruction -> IF LPAREN expression RPAREN LBRACE bloc RBRACE ELSE LBRACE bloc RBRACE .)
-    POINT_VIRGULE   reduce using rule 7 (instruction -> IF LPAREN expression RPAREN LBRACE bloc RBRACE ELSE LBRACE bloc RBRACE .)
-    $end            reduce using rule 7 (instruction -> IF LPAREN expression RPAREN LBRACE bloc RBRACE ELSE LBRACE bloc RBRACE .)
-    RBRACE          reduce using rule 7 (instruction -> IF LPAREN expression RPAREN LBRACE bloc RBRACE ELSE LBRACE bloc RBRACE .)
+    PLUS_EGAL       shift and go to state 37
+    MOINS_EGAL      shift and go to state 38
+    FOIS_EGAL       shift and go to state 39
+    DIVISE_EGAL     shift and go to state 40
+    PLUS_PLUS       shift and go to state 41
+    EGAL            reduce using rule 30 (id_list -> IDENTIFIANT .)
+    VIRGULE         reduce using rule 30 (id_list -> IDENTIFIANT .)
 
 
 state 67
 
-    (19) instruction -> FOR LPAREN affectation_simple POINT_VIRGULE expression POINT_VIRGULE affectation_simple RPAREN LBRACE bloc RBRACE .
+    (20) instruction -> FUNCTION IDENTIFIANT LPAREN . param_list_opt RPAREN block
+    (32) param_list_opt -> . empty
+    (33) param_list_opt -> . param_list
+    (53) empty -> .
+    (34) param_list -> . IDENTIFIANT
+    (35) param_list -> . param_list VIRGULE IDENTIFIANT
 
-    IDENTIFIANT     reduce using rule 19 (instruction -> FOR LPAREN affectation_simple POINT_VIRGULE expression POINT_VIRGULE affectation_simple RPAREN LBRACE bloc RBRACE .)
-    PRINT           reduce using rule 19 (instruction -> FOR LPAREN affectation_simple POINT_VIRGULE expression POINT_VIRGULE affectation_simple RPAREN LBRACE bloc RBRACE .)
-    IF              reduce using rule 19 (instruction -> FOR LPAREN affectation_simple POINT_VIRGULE expression POINT_VIRGULE affectation_simple RPAREN LBRACE bloc RBRACE .)
-    WHILE           reduce using rule 19 (instruction -> FOR LPAREN affectation_simple POINT_VIRGULE expression POINT_VIRGULE affectation_simple RPAREN LBRACE bloc RBRACE .)
-    FOR             reduce using rule 19 (instruction -> FOR LPAREN affectation_simple POINT_VIRGULE expression POINT_VIRGULE affectation_simple RPAREN LBRACE bloc RBRACE .)
-    POINT_VIRGULE   reduce using rule 19 (instruction -> FOR LPAREN affectation_simple POINT_VIRGULE expression POINT_VIRGULE affectation_simple RPAREN LBRACE bloc RBRACE .)
-    $end            reduce using rule 19 (instruction -> FOR LPAREN affectation_simple POINT_VIRGULE expression POINT_VIRGULE affectation_simple RPAREN LBRACE bloc RBRACE .)
-    RBRACE          reduce using rule 19 (instruction -> FOR LPAREN affectation_simple POINT_VIRGULE expression POINT_VIRGULE affectation_simple RPAREN LBRACE bloc RBRACE .)
+    RPAREN          reduce using rule 53 (empty -> .)
+    IDENTIFIANT     shift and go to state 85
+
+    param_list_opt                 shift and go to state 86
+    empty                          shift and go to state 87
+    param_list                     shift and go to state 88
+
+state 68
+
+    (8) simple_statement -> IDENTIFIANT PLUS_EGAL expression .
+    (44) expression -> expression . PLUS expression
+    (45) expression -> expression . MOINS expression
+    (46) expression -> expression . FOIS expression
+    (47) expression -> expression . DIVISE expression
+    (48) expression -> expression . INFERIEUR expression
+    (49) expression -> expression . SUPERIEUR expression
+    (50) expression -> expression . EGAL_EGAL expression
+
+    POINT_VIRGULE   reduce using rule 8 (simple_statement -> IDENTIFIANT PLUS_EGAL expression .)
+    RPAREN          reduce using rule 8 (simple_statement -> IDENTIFIANT PLUS_EGAL expression .)
+    PLUS            shift and go to state 26
+    MOINS           shift and go to state 27
+    FOIS            shift and go to state 28
+    DIVISE          shift and go to state 29
+    INFERIEUR       shift and go to state 30
+    SUPERIEUR       shift and go to state 31
+    EGAL_EGAL       shift and go to state 32
+
+
+state 69
+
+    (9) simple_statement -> IDENTIFIANT MOINS_EGAL expression .
+    (44) expression -> expression . PLUS expression
+    (45) expression -> expression . MOINS expression
+    (46) expression -> expression . FOIS expression
+    (47) expression -> expression . DIVISE expression
+    (48) expression -> expression . INFERIEUR expression
+    (49) expression -> expression . SUPERIEUR expression
+    (50) expression -> expression . EGAL_EGAL expression
+
+    POINT_VIRGULE   reduce using rule 9 (simple_statement -> IDENTIFIANT MOINS_EGAL expression .)
+    RPAREN          reduce using rule 9 (simple_statement -> IDENTIFIANT MOINS_EGAL expression .)
+    PLUS            shift and go to state 26
+    MOINS           shift and go to state 27
+    FOIS            shift and go to state 28
+    DIVISE          shift and go to state 29
+    INFERIEUR       shift and go to state 30
+    SUPERIEUR       shift and go to state 31
+    EGAL_EGAL       shift and go to state 32
+
+
+state 70
+
+    (10) simple_statement -> IDENTIFIANT FOIS_EGAL expression .
+    (44) expression -> expression . PLUS expression
+    (45) expression -> expression . MOINS expression
+    (46) expression -> expression . FOIS expression
+    (47) expression -> expression . DIVISE expression
+    (48) expression -> expression . INFERIEUR expression
+    (49) expression -> expression . SUPERIEUR expression
+    (50) expression -> expression . EGAL_EGAL expression
+
+    POINT_VIRGULE   reduce using rule 10 (simple_statement -> IDENTIFIANT FOIS_EGAL expression .)
+    RPAREN          reduce using rule 10 (simple_statement -> IDENTIFIANT FOIS_EGAL expression .)
+    PLUS            shift and go to state 26
+    MOINS           shift and go to state 27
+    FOIS            shift and go to state 28
+    DIVISE          shift and go to state 29
+    INFERIEUR       shift and go to state 30
+    SUPERIEUR       shift and go to state 31
+    EGAL_EGAL       shift and go to state 32
+
+
+state 71
+
+    (11) simple_statement -> IDENTIFIANT DIVISE_EGAL expression .
+    (44) expression -> expression . PLUS expression
+    (45) expression -> expression . MOINS expression
+    (46) expression -> expression . FOIS expression
+    (47) expression -> expression . DIVISE expression
+    (48) expression -> expression . INFERIEUR expression
+    (49) expression -> expression . SUPERIEUR expression
+    (50) expression -> expression . EGAL_EGAL expression
+
+    POINT_VIRGULE   reduce using rule 11 (simple_statement -> IDENTIFIANT DIVISE_EGAL expression .)
+    RPAREN          reduce using rule 11 (simple_statement -> IDENTIFIANT DIVISE_EGAL expression .)
+    PLUS            shift and go to state 26
+    MOINS           shift and go to state 27
+    FOIS            shift and go to state 28
+    DIVISE          shift and go to state 29
+    INFERIEUR       shift and go to state 30
+    SUPERIEUR       shift and go to state 31
+    EGAL_EGAL       shift and go to state 32
+
+
+state 72
+
+    (43) expression -> IDENTIFIANT LPAREN argument_list_opt . RPAREN
+
+    RPAREN          shift and go to state 89
+
+
+state 73
+
+    (36) argument_list_opt -> empty .
+
+    RPAREN          reduce using rule 36 (argument_list_opt -> empty .)
+
+
+state 74
+
+    (37) argument_list_opt -> expression_list .
+    (39) expression_list -> expression_list . VIRGULE expression
+
+    RPAREN          reduce using rule 37 (argument_list_opt -> expression_list .)
+    VIRGULE         shift and go to state 81
+
+
+state 75
+
+    (21) instruction -> RETURN expression POINT_VIRGULE .
+
+    PRINT           reduce using rule 21 (instruction -> RETURN expression POINT_VIRGULE .)
+    IF              reduce using rule 21 (instruction -> RETURN expression POINT_VIRGULE .)
+    WHILE           reduce using rule 21 (instruction -> RETURN expression POINT_VIRGULE .)
+    FOR             reduce using rule 21 (instruction -> RETURN expression POINT_VIRGULE .)
+    FUNCTION        reduce using rule 21 (instruction -> RETURN expression POINT_VIRGULE .)
+    RETURN          reduce using rule 21 (instruction -> RETURN expression POINT_VIRGULE .)
+    POINT_VIRGULE   reduce using rule 21 (instruction -> RETURN expression POINT_VIRGULE .)
+    IDENTIFIANT     reduce using rule 21 (instruction -> RETURN expression POINT_VIRGULE .)
+    VAR             reduce using rule 21 (instruction -> RETURN expression POINT_VIRGULE .)
+    NOMBRE          reduce using rule 21 (instruction -> RETURN expression POINT_VIRGULE .)
+    CHAINE          reduce using rule 21 (instruction -> RETURN expression POINT_VIRGULE .)
+    MOINS           reduce using rule 21 (instruction -> RETURN expression POINT_VIRGULE .)
+    LPAREN          reduce using rule 21 (instruction -> RETURN expression POINT_VIRGULE .)
+    $end            reduce using rule 21 (instruction -> RETURN expression POINT_VIRGULE .)
+    RBRACE          reduce using rule 21 (instruction -> RETURN expression POINT_VIRGULE .)
+
+
+state 76
+
+    (7) simple_statement -> id_list EGAL expression_list .
+    (39) expression_list -> expression_list . VIRGULE expression
+
+    POINT_VIRGULE   reduce using rule 7 (simple_statement -> id_list EGAL expression_list .)
+    RPAREN          reduce using rule 7 (simple_statement -> id_list EGAL expression_list .)
+    VIRGULE         shift and go to state 81
+
+
+state 77
+
+    (31) id_list -> id_list VIRGULE IDENTIFIANT .
+
+    EGAL            reduce using rule 31 (id_list -> id_list VIRGULE IDENTIFIANT .)
+    VIRGULE         reduce using rule 31 (id_list -> id_list VIRGULE IDENTIFIANT .)
+
+
+state 78
+
+    (27) declaration_list -> declaration_list VIRGULE . declaration
+    (28) declaration -> . IDENTIFIANT
+    (29) declaration -> . IDENTIFIANT EGAL expression
+
+    IDENTIFIANT     shift and go to state 49
+
+    declaration                    shift and go to state 90
+
+state 79
+
+    (29) declaration -> IDENTIFIANT EGAL . expression
+    (40) expression -> . NOMBRE
+    (41) expression -> . CHAINE
+    (42) expression -> . IDENTIFIANT
+    (43) expression -> . IDENTIFIANT LPAREN argument_list_opt RPAREN
+    (44) expression -> . expression PLUS expression
+    (45) expression -> . expression MOINS expression
+    (46) expression -> . expression FOIS expression
+    (47) expression -> . expression DIVISE expression
+    (48) expression -> . expression INFERIEUR expression
+    (49) expression -> . expression SUPERIEUR expression
+    (50) expression -> . expression EGAL_EGAL expression
+    (51) expression -> . MOINS expression
+    (52) expression -> . LPAREN expression RPAREN
+
+    NOMBRE          shift and go to state 17
+    CHAINE          shift and go to state 18
+    IDENTIFIANT     shift and go to state 24
+    MOINS           shift and go to state 19
+    LPAREN          shift and go to state 7
+
+    expression                     shift and go to state 91
+
+state 80
+
+    (14) instruction -> PRINT LPAREN expression_list RPAREN . POINT_VIRGULE
+
+    POINT_VIRGULE   shift and go to state 92
+
+
+state 81
+
+    (39) expression_list -> expression_list VIRGULE . expression
+    (40) expression -> . NOMBRE
+    (41) expression -> . CHAINE
+    (42) expression -> . IDENTIFIANT
+    (43) expression -> . IDENTIFIANT LPAREN argument_list_opt RPAREN
+    (44) expression -> . expression PLUS expression
+    (45) expression -> . expression MOINS expression
+    (46) expression -> . expression FOIS expression
+    (47) expression -> . expression DIVISE expression
+    (48) expression -> . expression INFERIEUR expression
+    (49) expression -> . expression SUPERIEUR expression
+    (50) expression -> . expression EGAL_EGAL expression
+    (51) expression -> . MOINS expression
+    (52) expression -> . LPAREN expression RPAREN
+
+    NOMBRE          shift and go to state 17
+    CHAINE          shift and go to state 18
+    IDENTIFIANT     shift and go to state 24
+    MOINS           shift and go to state 19
+    LPAREN          shift and go to state 7
+
+    expression                     shift and go to state 93
+
+state 82
+
+    (16) instruction -> IF LPAREN expression RPAREN . block
+    (17) instruction -> IF LPAREN expression RPAREN . block ELSE block
+    (4) block -> . LBRACE RBRACE
+    (5) block -> . LBRACE instruction_list RBRACE
+
+    LBRACE          shift and go to state 95
+
+    block                          shift and go to state 94
+
+state 83
+
+    (18) instruction -> WHILE LPAREN expression RPAREN . block
+    (4) block -> . LBRACE RBRACE
+    (5) block -> . LBRACE instruction_list RBRACE
+
+    LBRACE          shift and go to state 95
+
+    block                          shift and go to state 96
+
+state 84
+
+    (19) instruction -> FOR LPAREN for_part POINT_VIRGULE . expression POINT_VIRGULE for_part RPAREN block
+    (40) expression -> . NOMBRE
+    (41) expression -> . CHAINE
+    (42) expression -> . IDENTIFIANT
+    (43) expression -> . IDENTIFIANT LPAREN argument_list_opt RPAREN
+    (44) expression -> . expression PLUS expression
+    (45) expression -> . expression MOINS expression
+    (46) expression -> . expression FOIS expression
+    (47) expression -> . expression DIVISE expression
+    (48) expression -> . expression INFERIEUR expression
+    (49) expression -> . expression SUPERIEUR expression
+    (50) expression -> . expression EGAL_EGAL expression
+    (51) expression -> . MOINS expression
+    (52) expression -> . LPAREN expression RPAREN
+
+    NOMBRE          shift and go to state 17
+    CHAINE          shift and go to state 18
+    IDENTIFIANT     shift and go to state 24
+    MOINS           shift and go to state 19
+    LPAREN          shift and go to state 7
+
+    expression                     shift and go to state 97
+
+state 85
+
+    (34) param_list -> IDENTIFIANT .
+
+    VIRGULE         reduce using rule 34 (param_list -> IDENTIFIANT .)
+    RPAREN          reduce using rule 34 (param_list -> IDENTIFIANT .)
+
+
+state 86
+
+    (20) instruction -> FUNCTION IDENTIFIANT LPAREN param_list_opt . RPAREN block
+
+    RPAREN          shift and go to state 98
+
+
+state 87
+
+    (32) param_list_opt -> empty .
+
+    RPAREN          reduce using rule 32 (param_list_opt -> empty .)
+
+
+state 88
+
+    (33) param_list_opt -> param_list .
+    (35) param_list -> param_list . VIRGULE IDENTIFIANT
+
+    RPAREN          reduce using rule 33 (param_list_opt -> param_list .)
+    VIRGULE         shift and go to state 99
+
+
+state 89
+
+    (43) expression -> IDENTIFIANT LPAREN argument_list_opt RPAREN .
+
+    POINT_VIRGULE   reduce using rule 43 (expression -> IDENTIFIANT LPAREN argument_list_opt RPAREN .)
+    PLUS            reduce using rule 43 (expression -> IDENTIFIANT LPAREN argument_list_opt RPAREN .)
+    MOINS           reduce using rule 43 (expression -> IDENTIFIANT LPAREN argument_list_opt RPAREN .)
+    FOIS            reduce using rule 43 (expression -> IDENTIFIANT LPAREN argument_list_opt RPAREN .)
+    DIVISE          reduce using rule 43 (expression -> IDENTIFIANT LPAREN argument_list_opt RPAREN .)
+    INFERIEUR       reduce using rule 43 (expression -> IDENTIFIANT LPAREN argument_list_opt RPAREN .)
+    SUPERIEUR       reduce using rule 43 (expression -> IDENTIFIANT LPAREN argument_list_opt RPAREN .)
+    EGAL_EGAL       reduce using rule 43 (expression -> IDENTIFIANT LPAREN argument_list_opt RPAREN .)
+    RPAREN          reduce using rule 43 (expression -> IDENTIFIANT LPAREN argument_list_opt RPAREN .)
+    VIRGULE         reduce using rule 43 (expression -> IDENTIFIANT LPAREN argument_list_opt RPAREN .)
+
+
+state 90
+
+    (27) declaration_list -> declaration_list VIRGULE declaration .
+
+    VIRGULE         reduce using rule 27 (declaration_list -> declaration_list VIRGULE declaration .)
+    POINT_VIRGULE   reduce using rule 27 (declaration_list -> declaration_list VIRGULE declaration .)
+    RPAREN          reduce using rule 27 (declaration_list -> declaration_list VIRGULE declaration .)
+
+
+state 91
+
+    (29) declaration -> IDENTIFIANT EGAL expression .
+    (44) expression -> expression . PLUS expression
+    (45) expression -> expression . MOINS expression
+    (46) expression -> expression . FOIS expression
+    (47) expression -> expression . DIVISE expression
+    (48) expression -> expression . INFERIEUR expression
+    (49) expression -> expression . SUPERIEUR expression
+    (50) expression -> expression . EGAL_EGAL expression
+
+    VIRGULE         reduce using rule 29 (declaration -> IDENTIFIANT EGAL expression .)
+    POINT_VIRGULE   reduce using rule 29 (declaration -> IDENTIFIANT EGAL expression .)
+    RPAREN          reduce using rule 29 (declaration -> IDENTIFIANT EGAL expression .)
+    PLUS            shift and go to state 26
+    MOINS           shift and go to state 27
+    FOIS            shift and go to state 28
+    DIVISE          shift and go to state 29
+    INFERIEUR       shift and go to state 30
+    SUPERIEUR       shift and go to state 31
+    EGAL_EGAL       shift and go to state 32
+
+
+state 92
+
+    (14) instruction -> PRINT LPAREN expression_list RPAREN POINT_VIRGULE .
+
+    PRINT           reduce using rule 14 (instruction -> PRINT LPAREN expression_list RPAREN POINT_VIRGULE .)
+    IF              reduce using rule 14 (instruction -> PRINT LPAREN expression_list RPAREN POINT_VIRGULE .)
+    WHILE           reduce using rule 14 (instruction -> PRINT LPAREN expression_list RPAREN POINT_VIRGULE .)
+    FOR             reduce using rule 14 (instruction -> PRINT LPAREN expression_list RPAREN POINT_VIRGULE .)
+    FUNCTION        reduce using rule 14 (instruction -> PRINT LPAREN expression_list RPAREN POINT_VIRGULE .)
+    RETURN          reduce using rule 14 (instruction -> PRINT LPAREN expression_list RPAREN POINT_VIRGULE .)
+    POINT_VIRGULE   reduce using rule 14 (instruction -> PRINT LPAREN expression_list RPAREN POINT_VIRGULE .)
+    IDENTIFIANT     reduce using rule 14 (instruction -> PRINT LPAREN expression_list RPAREN POINT_VIRGULE .)
+    VAR             reduce using rule 14 (instruction -> PRINT LPAREN expression_list RPAREN POINT_VIRGULE .)
+    NOMBRE          reduce using rule 14 (instruction -> PRINT LPAREN expression_list RPAREN POINT_VIRGULE .)
+    CHAINE          reduce using rule 14 (instruction -> PRINT LPAREN expression_list RPAREN POINT_VIRGULE .)
+    MOINS           reduce using rule 14 (instruction -> PRINT LPAREN expression_list RPAREN POINT_VIRGULE .)
+    LPAREN          reduce using rule 14 (instruction -> PRINT LPAREN expression_list RPAREN POINT_VIRGULE .)
+    $end            reduce using rule 14 (instruction -> PRINT LPAREN expression_list RPAREN POINT_VIRGULE .)
+    RBRACE          reduce using rule 14 (instruction -> PRINT LPAREN expression_list RPAREN POINT_VIRGULE .)
+
+
+state 93
+
+    (39) expression_list -> expression_list VIRGULE expression .
+    (44) expression -> expression . PLUS expression
+    (45) expression -> expression . MOINS expression
+    (46) expression -> expression . FOIS expression
+    (47) expression -> expression . DIVISE expression
+    (48) expression -> expression . INFERIEUR expression
+    (49) expression -> expression . SUPERIEUR expression
+    (50) expression -> expression . EGAL_EGAL expression
+
+    RPAREN          reduce using rule 39 (expression_list -> expression_list VIRGULE expression .)
+    VIRGULE         reduce using rule 39 (expression_list -> expression_list VIRGULE expression .)
+    POINT_VIRGULE   reduce using rule 39 (expression_list -> expression_list VIRGULE expression .)
+    PLUS            shift and go to state 26
+    MOINS           shift and go to state 27
+    FOIS            shift and go to state 28
+    DIVISE          shift and go to state 29
+    INFERIEUR       shift and go to state 30
+    SUPERIEUR       shift and go to state 31
+    EGAL_EGAL       shift and go to state 32
+
+
+state 94
+
+    (16) instruction -> IF LPAREN expression RPAREN block .
+    (17) instruction -> IF LPAREN expression RPAREN block . ELSE block
+
+    PRINT           reduce using rule 16 (instruction -> IF LPAREN expression RPAREN block .)
+    IF              reduce using rule 16 (instruction -> IF LPAREN expression RPAREN block .)
+    WHILE           reduce using rule 16 (instruction -> IF LPAREN expression RPAREN block .)
+    FOR             reduce using rule 16 (instruction -> IF LPAREN expression RPAREN block .)
+    FUNCTION        reduce using rule 16 (instruction -> IF LPAREN expression RPAREN block .)
+    RETURN          reduce using rule 16 (instruction -> IF LPAREN expression RPAREN block .)
+    POINT_VIRGULE   reduce using rule 16 (instruction -> IF LPAREN expression RPAREN block .)
+    IDENTIFIANT     reduce using rule 16 (instruction -> IF LPAREN expression RPAREN block .)
+    VAR             reduce using rule 16 (instruction -> IF LPAREN expression RPAREN block .)
+    NOMBRE          reduce using rule 16 (instruction -> IF LPAREN expression RPAREN block .)
+    CHAINE          reduce using rule 16 (instruction -> IF LPAREN expression RPAREN block .)
+    MOINS           reduce using rule 16 (instruction -> IF LPAREN expression RPAREN block .)
+    LPAREN          reduce using rule 16 (instruction -> IF LPAREN expression RPAREN block .)
+    $end            reduce using rule 16 (instruction -> IF LPAREN expression RPAREN block .)
+    RBRACE          reduce using rule 16 (instruction -> IF LPAREN expression RPAREN block .)
+    ELSE            shift and go to state 100
+
+
+state 95
+
+    (4) block -> LBRACE . RBRACE
+    (5) block -> LBRACE . instruction_list RBRACE
+    (2) instruction_list -> . instruction
+    (3) instruction_list -> . instruction_list instruction
+    (6) instruction -> . simple_statement POINT_VIRGULE
+    (14) instruction -> . PRINT LPAREN expression_list RPAREN POINT_VIRGULE
+    (15) instruction -> . expression POINT_VIRGULE
+    (16) instruction -> . IF LPAREN expression RPAREN block
+    (17) instruction -> . IF LPAREN expression RPAREN block ELSE block
+    (18) instruction -> . WHILE LPAREN expression RPAREN block
+    (19) instruction -> . FOR LPAREN for_part POINT_VIRGULE expression POINT_VIRGULE for_part RPAREN block
+    (20) instruction -> . FUNCTION IDENTIFIANT LPAREN param_list_opt RPAREN block
+    (21) instruction -> . RETURN expression POINT_VIRGULE
+    (22) instruction -> . RETURN POINT_VIRGULE
+    (23) instruction -> . POINT_VIRGULE
+    (7) simple_statement -> . id_list EGAL expression_list
+    (8) simple_statement -> . IDENTIFIANT PLUS_EGAL expression
+    (9) simple_statement -> . IDENTIFIANT MOINS_EGAL expression
+    (10) simple_statement -> . IDENTIFIANT FOIS_EGAL expression
+    (11) simple_statement -> . IDENTIFIANT DIVISE_EGAL expression
+    (12) simple_statement -> . IDENTIFIANT PLUS_PLUS
+    (13) simple_statement -> . VAR declaration_list
+    (40) expression -> . NOMBRE
+    (41) expression -> . CHAINE
+    (42) expression -> . IDENTIFIANT
+    (43) expression -> . IDENTIFIANT LPAREN argument_list_opt RPAREN
+    (44) expression -> . expression PLUS expression
+    (45) expression -> . expression MOINS expression
+    (46) expression -> . expression FOIS expression
+    (47) expression -> . expression DIVISE expression
+    (48) expression -> . expression INFERIEUR expression
+    (49) expression -> . expression SUPERIEUR expression
+    (50) expression -> . expression EGAL_EGAL expression
+    (51) expression -> . MOINS expression
+    (52) expression -> . LPAREN expression RPAREN
+    (30) id_list -> . IDENTIFIANT
+    (31) id_list -> . id_list VIRGULE IDENTIFIANT
+
+    RBRACE          shift and go to state 101
+    PRINT           shift and go to state 6
+    IF              shift and go to state 9
+    WHILE           shift and go to state 10
+    FOR             shift and go to state 11
+    FUNCTION        shift and go to state 12
+    RETURN          shift and go to state 14
+    POINT_VIRGULE   shift and go to state 5
+    IDENTIFIANT     shift and go to state 13
+    VAR             shift and go to state 16
+    NOMBRE          shift and go to state 17
+    CHAINE          shift and go to state 18
+    MOINS           shift and go to state 19
+    LPAREN          shift and go to state 7
+
+    instruction_list               shift and go to state 102
+    instruction                    shift and go to state 3
+    simple_statement               shift and go to state 4
+    expression                     shift and go to state 8
+    id_list                        shift and go to state 15
+
+state 96
+
+    (18) instruction -> WHILE LPAREN expression RPAREN block .
+
+    PRINT           reduce using rule 18 (instruction -> WHILE LPAREN expression RPAREN block .)
+    IF              reduce using rule 18 (instruction -> WHILE LPAREN expression RPAREN block .)
+    WHILE           reduce using rule 18 (instruction -> WHILE LPAREN expression RPAREN block .)
+    FOR             reduce using rule 18 (instruction -> WHILE LPAREN expression RPAREN block .)
+    FUNCTION        reduce using rule 18 (instruction -> WHILE LPAREN expression RPAREN block .)
+    RETURN          reduce using rule 18 (instruction -> WHILE LPAREN expression RPAREN block .)
+    POINT_VIRGULE   reduce using rule 18 (instruction -> WHILE LPAREN expression RPAREN block .)
+    IDENTIFIANT     reduce using rule 18 (instruction -> WHILE LPAREN expression RPAREN block .)
+    VAR             reduce using rule 18 (instruction -> WHILE LPAREN expression RPAREN block .)
+    NOMBRE          reduce using rule 18 (instruction -> WHILE LPAREN expression RPAREN block .)
+    CHAINE          reduce using rule 18 (instruction -> WHILE LPAREN expression RPAREN block .)
+    MOINS           reduce using rule 18 (instruction -> WHILE LPAREN expression RPAREN block .)
+    LPAREN          reduce using rule 18 (instruction -> WHILE LPAREN expression RPAREN block .)
+    $end            reduce using rule 18 (instruction -> WHILE LPAREN expression RPAREN block .)
+    RBRACE          reduce using rule 18 (instruction -> WHILE LPAREN expression RPAREN block .)
+
+
+state 97
+
+    (19) instruction -> FOR LPAREN for_part POINT_VIRGULE expression . POINT_VIRGULE for_part RPAREN block
+    (44) expression -> expression . PLUS expression
+    (45) expression -> expression . MOINS expression
+    (46) expression -> expression . FOIS expression
+    (47) expression -> expression . DIVISE expression
+    (48) expression -> expression . INFERIEUR expression
+    (49) expression -> expression . SUPERIEUR expression
+    (50) expression -> expression . EGAL_EGAL expression
+
+    POINT_VIRGULE   shift and go to state 103
+    PLUS            shift and go to state 26
+    MOINS           shift and go to state 27
+    FOIS            shift and go to state 28
+    DIVISE          shift and go to state 29
+    INFERIEUR       shift and go to state 30
+    SUPERIEUR       shift and go to state 31
+    EGAL_EGAL       shift and go to state 32
+
+
+state 98
+
+    (20) instruction -> FUNCTION IDENTIFIANT LPAREN param_list_opt RPAREN . block
+    (4) block -> . LBRACE RBRACE
+    (5) block -> . LBRACE instruction_list RBRACE
+
+    LBRACE          shift and go to state 95
+
+    block                          shift and go to state 104
+
+state 99
+
+    (35) param_list -> param_list VIRGULE . IDENTIFIANT
+
+    IDENTIFIANT     shift and go to state 105
+
+
+state 100
+
+    (17) instruction -> IF LPAREN expression RPAREN block ELSE . block
+    (4) block -> . LBRACE RBRACE
+    (5) block -> . LBRACE instruction_list RBRACE
+
+    LBRACE          shift and go to state 95
+
+    block                          shift and go to state 106
+
+state 101
+
+    (4) block -> LBRACE RBRACE .
+
+    ELSE            reduce using rule 4 (block -> LBRACE RBRACE .)
+    PRINT           reduce using rule 4 (block -> LBRACE RBRACE .)
+    IF              reduce using rule 4 (block -> LBRACE RBRACE .)
+    WHILE           reduce using rule 4 (block -> LBRACE RBRACE .)
+    FOR             reduce using rule 4 (block -> LBRACE RBRACE .)
+    FUNCTION        reduce using rule 4 (block -> LBRACE RBRACE .)
+    RETURN          reduce using rule 4 (block -> LBRACE RBRACE .)
+    POINT_VIRGULE   reduce using rule 4 (block -> LBRACE RBRACE .)
+    IDENTIFIANT     reduce using rule 4 (block -> LBRACE RBRACE .)
+    VAR             reduce using rule 4 (block -> LBRACE RBRACE .)
+    NOMBRE          reduce using rule 4 (block -> LBRACE RBRACE .)
+    CHAINE          reduce using rule 4 (block -> LBRACE RBRACE .)
+    MOINS           reduce using rule 4 (block -> LBRACE RBRACE .)
+    LPAREN          reduce using rule 4 (block -> LBRACE RBRACE .)
+    $end            reduce using rule 4 (block -> LBRACE RBRACE .)
+    RBRACE          reduce using rule 4 (block -> LBRACE RBRACE .)
+
+
+state 102
+
+    (5) block -> LBRACE instruction_list . RBRACE
+    (3) instruction_list -> instruction_list . instruction
+    (6) instruction -> . simple_statement POINT_VIRGULE
+    (14) instruction -> . PRINT LPAREN expression_list RPAREN POINT_VIRGULE
+    (15) instruction -> . expression POINT_VIRGULE
+    (16) instruction -> . IF LPAREN expression RPAREN block
+    (17) instruction -> . IF LPAREN expression RPAREN block ELSE block
+    (18) instruction -> . WHILE LPAREN expression RPAREN block
+    (19) instruction -> . FOR LPAREN for_part POINT_VIRGULE expression POINT_VIRGULE for_part RPAREN block
+    (20) instruction -> . FUNCTION IDENTIFIANT LPAREN param_list_opt RPAREN block
+    (21) instruction -> . RETURN expression POINT_VIRGULE
+    (22) instruction -> . RETURN POINT_VIRGULE
+    (23) instruction -> . POINT_VIRGULE
+    (7) simple_statement -> . id_list EGAL expression_list
+    (8) simple_statement -> . IDENTIFIANT PLUS_EGAL expression
+    (9) simple_statement -> . IDENTIFIANT MOINS_EGAL expression
+    (10) simple_statement -> . IDENTIFIANT FOIS_EGAL expression
+    (11) simple_statement -> . IDENTIFIANT DIVISE_EGAL expression
+    (12) simple_statement -> . IDENTIFIANT PLUS_PLUS
+    (13) simple_statement -> . VAR declaration_list
+    (40) expression -> . NOMBRE
+    (41) expression -> . CHAINE
+    (42) expression -> . IDENTIFIANT
+    (43) expression -> . IDENTIFIANT LPAREN argument_list_opt RPAREN
+    (44) expression -> . expression PLUS expression
+    (45) expression -> . expression MOINS expression
+    (46) expression -> . expression FOIS expression
+    (47) expression -> . expression DIVISE expression
+    (48) expression -> . expression INFERIEUR expression
+    (49) expression -> . expression SUPERIEUR expression
+    (50) expression -> . expression EGAL_EGAL expression
+    (51) expression -> . MOINS expression
+    (52) expression -> . LPAREN expression RPAREN
+    (30) id_list -> . IDENTIFIANT
+    (31) id_list -> . id_list VIRGULE IDENTIFIANT
+
+    RBRACE          shift and go to state 107
+    PRINT           shift and go to state 6
+    IF              shift and go to state 9
+    WHILE           shift and go to state 10
+    FOR             shift and go to state 11
+    FUNCTION        shift and go to state 12
+    RETURN          shift and go to state 14
+    POINT_VIRGULE   shift and go to state 5
+    IDENTIFIANT     shift and go to state 13
+    VAR             shift and go to state 16
+    NOMBRE          shift and go to state 17
+    CHAINE          shift and go to state 18
+    MOINS           shift and go to state 19
+    LPAREN          shift and go to state 7
+
+    instruction                    shift and go to state 20
+    simple_statement               shift and go to state 4
+    expression                     shift and go to state 8
+    id_list                        shift and go to state 15
+
+state 103
+
+    (19) instruction -> FOR LPAREN for_part POINT_VIRGULE expression POINT_VIRGULE . for_part RPAREN block
+    (24) for_part -> . simple_statement
+    (25) for_part -> . empty
+    (7) simple_statement -> . id_list EGAL expression_list
+    (8) simple_statement -> . IDENTIFIANT PLUS_EGAL expression
+    (9) simple_statement -> . IDENTIFIANT MOINS_EGAL expression
+    (10) simple_statement -> . IDENTIFIANT FOIS_EGAL expression
+    (11) simple_statement -> . IDENTIFIANT DIVISE_EGAL expression
+    (12) simple_statement -> . IDENTIFIANT PLUS_PLUS
+    (13) simple_statement -> . VAR declaration_list
+    (53) empty -> .
+    (30) id_list -> . IDENTIFIANT
+    (31) id_list -> . id_list VIRGULE IDENTIFIANT
+
+    IDENTIFIANT     shift and go to state 66
+    VAR             shift and go to state 16
+    RPAREN          reduce using rule 53 (empty -> .)
+
+    for_part                       shift and go to state 108
+    simple_statement               shift and go to state 64
+    empty                          shift and go to state 65
+    id_list                        shift and go to state 15
+
+state 104
+
+    (20) instruction -> FUNCTION IDENTIFIANT LPAREN param_list_opt RPAREN block .
+
+    PRINT           reduce using rule 20 (instruction -> FUNCTION IDENTIFIANT LPAREN param_list_opt RPAREN block .)
+    IF              reduce using rule 20 (instruction -> FUNCTION IDENTIFIANT LPAREN param_list_opt RPAREN block .)
+    WHILE           reduce using rule 20 (instruction -> FUNCTION IDENTIFIANT LPAREN param_list_opt RPAREN block .)
+    FOR             reduce using rule 20 (instruction -> FUNCTION IDENTIFIANT LPAREN param_list_opt RPAREN block .)
+    FUNCTION        reduce using rule 20 (instruction -> FUNCTION IDENTIFIANT LPAREN param_list_opt RPAREN block .)
+    RETURN          reduce using rule 20 (instruction -> FUNCTION IDENTIFIANT LPAREN param_list_opt RPAREN block .)
+    POINT_VIRGULE   reduce using rule 20 (instruction -> FUNCTION IDENTIFIANT LPAREN param_list_opt RPAREN block .)
+    IDENTIFIANT     reduce using rule 20 (instruction -> FUNCTION IDENTIFIANT LPAREN param_list_opt RPAREN block .)
+    VAR             reduce using rule 20 (instruction -> FUNCTION IDENTIFIANT LPAREN param_list_opt RPAREN block .)
+    NOMBRE          reduce using rule 20 (instruction -> FUNCTION IDENTIFIANT LPAREN param_list_opt RPAREN block .)
+    CHAINE          reduce using rule 20 (instruction -> FUNCTION IDENTIFIANT LPAREN param_list_opt RPAREN block .)
+    MOINS           reduce using rule 20 (instruction -> FUNCTION IDENTIFIANT LPAREN param_list_opt RPAREN block .)
+    LPAREN          reduce using rule 20 (instruction -> FUNCTION IDENTIFIANT LPAREN param_list_opt RPAREN block .)
+    $end            reduce using rule 20 (instruction -> FUNCTION IDENTIFIANT LPAREN param_list_opt RPAREN block .)
+    RBRACE          reduce using rule 20 (instruction -> FUNCTION IDENTIFIANT LPAREN param_list_opt RPAREN block .)
+
+
+state 105
+
+    (35) param_list -> param_list VIRGULE IDENTIFIANT .
+
+    VIRGULE         reduce using rule 35 (param_list -> param_list VIRGULE IDENTIFIANT .)
+    RPAREN          reduce using rule 35 (param_list -> param_list VIRGULE IDENTIFIANT .)
+
+
+state 106
+
+    (17) instruction -> IF LPAREN expression RPAREN block ELSE block .
+
+    PRINT           reduce using rule 17 (instruction -> IF LPAREN expression RPAREN block ELSE block .)
+    IF              reduce using rule 17 (instruction -> IF LPAREN expression RPAREN block ELSE block .)
+    WHILE           reduce using rule 17 (instruction -> IF LPAREN expression RPAREN block ELSE block .)
+    FOR             reduce using rule 17 (instruction -> IF LPAREN expression RPAREN block ELSE block .)
+    FUNCTION        reduce using rule 17 (instruction -> IF LPAREN expression RPAREN block ELSE block .)
+    RETURN          reduce using rule 17 (instruction -> IF LPAREN expression RPAREN block ELSE block .)
+    POINT_VIRGULE   reduce using rule 17 (instruction -> IF LPAREN expression RPAREN block ELSE block .)
+    IDENTIFIANT     reduce using rule 17 (instruction -> IF LPAREN expression RPAREN block ELSE block .)
+    VAR             reduce using rule 17 (instruction -> IF LPAREN expression RPAREN block ELSE block .)
+    NOMBRE          reduce using rule 17 (instruction -> IF LPAREN expression RPAREN block ELSE block .)
+    CHAINE          reduce using rule 17 (instruction -> IF LPAREN expression RPAREN block ELSE block .)
+    MOINS           reduce using rule 17 (instruction -> IF LPAREN expression RPAREN block ELSE block .)
+    LPAREN          reduce using rule 17 (instruction -> IF LPAREN expression RPAREN block ELSE block .)
+    $end            reduce using rule 17 (instruction -> IF LPAREN expression RPAREN block ELSE block .)
+    RBRACE          reduce using rule 17 (instruction -> IF LPAREN expression RPAREN block ELSE block .)
+
+
+state 107
+
+    (5) block -> LBRACE instruction_list RBRACE .
+
+    ELSE            reduce using rule 5 (block -> LBRACE instruction_list RBRACE .)
+    PRINT           reduce using rule 5 (block -> LBRACE instruction_list RBRACE .)
+    IF              reduce using rule 5 (block -> LBRACE instruction_list RBRACE .)
+    WHILE           reduce using rule 5 (block -> LBRACE instruction_list RBRACE .)
+    FOR             reduce using rule 5 (block -> LBRACE instruction_list RBRACE .)
+    FUNCTION        reduce using rule 5 (block -> LBRACE instruction_list RBRACE .)
+    RETURN          reduce using rule 5 (block -> LBRACE instruction_list RBRACE .)
+    POINT_VIRGULE   reduce using rule 5 (block -> LBRACE instruction_list RBRACE .)
+    IDENTIFIANT     reduce using rule 5 (block -> LBRACE instruction_list RBRACE .)
+    VAR             reduce using rule 5 (block -> LBRACE instruction_list RBRACE .)
+    NOMBRE          reduce using rule 5 (block -> LBRACE instruction_list RBRACE .)
+    CHAINE          reduce using rule 5 (block -> LBRACE instruction_list RBRACE .)
+    MOINS           reduce using rule 5 (block -> LBRACE instruction_list RBRACE .)
+    LPAREN          reduce using rule 5 (block -> LBRACE instruction_list RBRACE .)
+    $end            reduce using rule 5 (block -> LBRACE instruction_list RBRACE .)
+    RBRACE          reduce using rule 5 (block -> LBRACE instruction_list RBRACE .)
+
+
+state 108
+
+    (19) instruction -> FOR LPAREN for_part POINT_VIRGULE expression POINT_VIRGULE for_part . RPAREN block
+
+    RPAREN          shift and go to state 109
+
+
+state 109
+
+    (19) instruction -> FOR LPAREN for_part POINT_VIRGULE expression POINT_VIRGULE for_part RPAREN . block
+    (4) block -> . LBRACE RBRACE
+    (5) block -> . LBRACE instruction_list RBRACE
+
+    LBRACE          shift and go to state 95
+
+    block                          shift and go to state 110
+
+state 110
+
+    (19) instruction -> FOR LPAREN for_part POINT_VIRGULE expression POINT_VIRGULE for_part RPAREN block .
+
+    PRINT           reduce using rule 19 (instruction -> FOR LPAREN for_part POINT_VIRGULE expression POINT_VIRGULE for_part RPAREN block .)
+    IF              reduce using rule 19 (instruction -> FOR LPAREN for_part POINT_VIRGULE expression POINT_VIRGULE for_part RPAREN block .)
+    WHILE           reduce using rule 19 (instruction -> FOR LPAREN for_part POINT_VIRGULE expression POINT_VIRGULE for_part RPAREN block .)
+    FOR             reduce using rule 19 (instruction -> FOR LPAREN for_part POINT_VIRGULE expression POINT_VIRGULE for_part RPAREN block .)
+    FUNCTION        reduce using rule 19 (instruction -> FOR LPAREN for_part POINT_VIRGULE expression POINT_VIRGULE for_part RPAREN block .)
+    RETURN          reduce using rule 19 (instruction -> FOR LPAREN for_part POINT_VIRGULE expression POINT_VIRGULE for_part RPAREN block .)
+    POINT_VIRGULE   reduce using rule 19 (instruction -> FOR LPAREN for_part POINT_VIRGULE expression POINT_VIRGULE for_part RPAREN block .)
+    IDENTIFIANT     reduce using rule 19 (instruction -> FOR LPAREN for_part POINT_VIRGULE expression POINT_VIRGULE for_part RPAREN block .)
+    VAR             reduce using rule 19 (instruction -> FOR LPAREN for_part POINT_VIRGULE expression POINT_VIRGULE for_part RPAREN block .)
+    NOMBRE          reduce using rule 19 (instruction -> FOR LPAREN for_part POINT_VIRGULE expression POINT_VIRGULE for_part RPAREN block .)
+    CHAINE          reduce using rule 19 (instruction -> FOR LPAREN for_part POINT_VIRGULE expression POINT_VIRGULE for_part RPAREN block .)
+    MOINS           reduce using rule 19 (instruction -> FOR LPAREN for_part POINT_VIRGULE expression POINT_VIRGULE for_part RPAREN block .)
+    LPAREN          reduce using rule 19 (instruction -> FOR LPAREN for_part POINT_VIRGULE expression POINT_VIRGULE for_part RPAREN block .)
+    $end            reduce using rule 19 (instruction -> FOR LPAREN for_part POINT_VIRGULE expression POINT_VIRGULE for_part RPAREN block .)
+    RBRACE          reduce using rule 19 (instruction -> FOR LPAREN for_part POINT_VIRGULE expression POINT_VIRGULE for_part RPAREN block .)
 
